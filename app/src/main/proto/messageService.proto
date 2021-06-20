@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package service;
 
+import "google/protobuf/empty.proto";
+
 option java_multiple_files = true;
 option java_package = "com.example.chatclient.stub";
 option java_outer_classname = "MessageServiceProto";
@@ -11,13 +13,47 @@ option go_package = "github.com/SachiniGamage/ChatServer/stub";
 message ChatMessage {
     string from = 1;
     string message = 2;
+    string to = 3;
+    int32 chatid=4;
 }
 
 message ChatMessageFromServer {
     string timestamp = 1;
     ChatMessage message = 2;
+    ChatMessage from = 3;
+    ChatMessage chatid=4;
 }
+
+message ChatMessageToServer {
+    string timestamp = 1;
+    ChatMessage message = 2;
+    ChatMessage to= 3;
+    ChatMessage chatid=4;
+}
+
+message RegisterUser{
+    string email=1;
+    string password=2;
+    string username=3;
+}
+
+message LoginUser{
+    string email=1;
+    string password=2;
+    string username=3;
+}
+
+message Token{
+    string token=1;
+}
+
+
 
 service ChatService {
     rpc Chat(stream ChatMessage) returns (stream ChatMessageFromServer);
+}
+
+service AuthenticateUser{
+    rpc Register(RegisterUser) returns(google.protobuf.Empty);
+    rpc Login(LoginUser) returns(Token);
 }

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".chat"
+    android:orientation="vertical">
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+
+
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_700"
+            android:theme="@style/Base.CardView"
+            app:popupTheme="@style/Widget.AppCompat.PopupMenu">
+
+
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:id="@+id/ProfileImage"
+                android:src="@drawable/slogo"
+                android:clickable="true"
+                android:onClick="onClick"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/userName"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:text="username"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="25dp"/>
+
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_gravity="center"
+        >
+<!--        <ScrollView-->
+<!--            android:id="@+id/chatVIew"-->
+<!--            android:layout_width="420dp"-->
+<!--            android:layout_height="600dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            >-->
+            <TextView
+                android:layout_width="420dp"
+                android:layout_height="600dp"
+                android:id="@+id/displayChat"/>
+<!--        </ScrollView>-->
+    </LinearLayout>
+
+
+
+
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:background="@color/white"-->
+    <!--        android:layout_marginBottom="true">-->
+
+    <!--        <EditText-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"/>-->
+
+    <!--            <ImageButton-->
+    <!--                android:layout_width="40dp"-->
+    <!--                android:layout_height="40dp"-->
+    <!--                android:id="@+id/sendBtn"-->
+    <!--                android:layout_marginEnd="true"-->
+    <!--                android:layout_marginRight="true"-->
+    <!--                />-->
+
+    <!--        </RelativeLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="5dp"
+        android:layout_alignParentBottom="true"
+
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/attachments"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="left"
+            android:clickable="true"
+            android:src="@drawable/logos"
+            />
+
+        <EditText
+            android:id="@+id/textSend"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="5"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:hint="Type the message"
+            android:scrollHorizontally="false" />
+
+        <Button
+            android:id="@+id/sendComment"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="right"
+            android:text=">"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+</LinearLayout>

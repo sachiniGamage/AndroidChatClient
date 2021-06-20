@@ -1,99 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/backgrnd">
 
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/teal_700"
-            android:theme="@style/Base.CardView"
-            app:popupTheme="@style/Widget.AppCompat.PopupMenu">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/profileImage"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/username"
-                android:layout_marginLeft="25dp"
-                android:text="username"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginStart="25dp"/>
-
-        </androidx.appcompat.widget.Toolbar>
-
-
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="5dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:layout_marginBottom="true">-->
-
-<!--        <EditText-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"/>-->
-
-<!--            <ImageButton-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:id="@+id/sendBtn"-->
-<!--                android:layout_marginEnd="true"-->
-<!--                android:layout_marginRight="true"-->
-<!--                />-->
-
-<!--        </RelativeLayout>-->
-
-    <LinearLayout
-        android:id="@+id/send_message"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/mlogo" />
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_alignParentBottom="true"
+        android:text="sender"
+        android:layout_gravity="center"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        android:layout_marginTop="-70dp"
+        android:textColor="@color/teal_700"/>
 
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/text_send"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_weight="5"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:hint="Type a message"
-            android:scrollHorizontally="false" />
-
-        <Button
-            android:id="@+id/send_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:gravity="center"
-            android:text="send"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+    <Button
+        android:layout_width="170dp"
+        android:id="@+id/btn_signup"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:text="SignUp"
+        android:layout_marginTop="90dp"
+        android:background="#000"
+        android:textColor="#fff"/>
+    <Button
+        android:layout_width="170dp"
+        android:id="@+id/btn_signIn"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="SignIn"
+        android:background="#000"
+        android:textColor="#fff"/>
 
 
-</RelativeLayout>
+
+
+</LinearLayout>
