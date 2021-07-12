@@ -45,9 +45,18 @@ message LoginUser{
 
 message Token{
     string token=1;
+
 }
 
+message Edit{
+    string username=1;
+}
 
+message FriendList{
+    string FriendsEmail = 1;
+    RegisterUser email =2;
+    RegisterUser username = 3;
+}
 
 service ChatService {
     rpc Chat(stream ChatMessage) returns (stream ChatMessageFromServer);
@@ -56,4 +65,9 @@ service ChatService {
 service AuthenticateUser{
     rpc Register(RegisterUser) returns(google.protobuf.Empty);
     rpc Login(LoginUser) returns(Token);
+}
+
+service UpdateUser{
+    rpc UpdateName(Edit) returns(RegisterUser);
+    rpc AddFriend(FriendList) returns(FriendList);
 }

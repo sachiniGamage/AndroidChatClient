@@ -11,10 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatClient">
-
-        <activity android:name=".friendList"></activity>
-        <activity android:name=".login" />
-<!--        <meta-data android:name="com.google.android.actions" />-->
+        <activity android:name=".profile"></activity>
+        <activity android:name=".friendList" />
+        <activity android:name=".login" /> <!-- <meta-data android:name="com.google.android.actions" /> -->
         <activity android:name=".chat" />
         <activity android:name=".register" />
         <activity

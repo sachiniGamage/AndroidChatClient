@@ -24,8 +24,7 @@ public class chat extends Activity {
     Button sendComment;
     EditText text_send;
     ImageView ProfileImage;
-//    private ScrollView chatView;
-//    ExecutorService myExecutor;
+//    FrameLayout displayChat
 
 
     @Override
@@ -34,46 +33,41 @@ public class chat extends Activity {
         setContentView(R.layout.activity_chat);
         new Thread(ChatClient.getInstance()).start();
 
-        username = (TextView) findViewById(R.id.userName);
-        //msg
+        sendMsg();
+        imageAndName();
+
+    }
+
+    //send the message and show it in the text view
+    private void sendMsg(){
+//        username = (TextView) findViewById(R.id.userName);
         text_send = (EditText) findViewById(R.id.textSend);
-        //send button
         sendComment = (Button) findViewById(R.id.sendComment);
-        ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
-//        chatView = (ScrollView) findViewById(R.id.chatVIew);
-        displayChat = (TextView) findViewById(R.id.displayChat);
+        displayChat =  findViewById(R.id.displayChat);
 
         displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
         System.out.println("display chat1");
         displayChat.setMovementMethod(new ScrollingMovementMethod());
-
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ChatClient.getInstance().addMsgToQueue(text_send.getText().toString());
-//                String msg =  text_send.getText().toString();
-                System.out.println("display chat");
-//                displayChat.append(msg);
                 displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
-                System.out.println("display chat1");
                 displayChat.setMovementMethod(new ScrollingMovementMethod());
-//                try
-//                {
-//                    myExecutor = Executors.newCachedThreadPool();
-//                    myExecutor.execute(ChatClient.getInstance());
-//                }
-//                catch (Exception e)
-//                {
-//                    e.printStackTrace();
-//                }
-
+                System.out.println("display chat1");
             }
         });
 
+    }
 
+    //go to friend list
+    private void imageAndName(){
+        ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
+        username = findViewById(R.id.userName);
 
-
-
+//        Bundle b = getIntent().getExtras();
+//        String email = (String) b.get("email") ;
+//        username.setText(email);
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,17 +76,4 @@ public class chat extends Activity {
             }
         });
     }
-
-    public void onClick(View view) {
-    }
-
-//    public void displayMessages(){
-//        String msg =  (String)sendComment.getText();
-////        ChatClient.getInstance().watchMessages();
-////        ChatClient.getInstance().getMsgFromQueue();
-//        displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
-//
-//        chatView.fullScroll(ScrollView.FOCUS_DOWN);
-//    }
-
 }

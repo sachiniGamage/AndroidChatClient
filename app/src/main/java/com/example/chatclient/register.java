@@ -18,26 +18,61 @@ public class register extends AppCompatActivity {
 
     private TextInputEditText name,email, password, confirmPassword;
     private TextView AlreadySignUp_hyperlink;
-//    TextInputLayout name;
     Button signup;
-    String user,pass,ConfirmPass;
+    private String user,pass,ConfirmPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        email = (TextInputEditText)findViewById(R.id.email);
+        signup();
+        hyperlink();
+
+    }
+
+    private void signup() {
+        email = (TextInputEditText) findViewById(R.id.email);
         password = findViewById(R.id.Password);
         confirmPassword = findViewById(R.id.ConfirmPassword);
         signup = findViewById(R.id.signup);
+        name = findViewById(R.id.name);
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                user = email.getText().toString();
+                pass = password.getText().toString();
+                ConfirmPass = confirmPassword.getText().toString();
+
+                if(user.equals("")) {
+                    email.setError("Can't be a blank");
+                }
+                else if(pass.equals("")){
+                    password.setError("Can't be a blank");
+                }
+                else if(ConfirmPass.equals("")){
+                    confirmPassword.setError("Can't be a blank");
+                }
+                else if(pass.length()<8){
+                    password.setError("At least 8 characters long");
+                }
+                else{
+
+                    ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(), name.getText().toString());
+                    System.out.println("Register done");
+                    startActivity(new Intent(register.this, login.class));
+
+                }
+            }
+
+        });
+    }
+
+    private void hyperlink(){
         AlreadySignUp_hyperlink = findViewById(R.id.AlreadySignUp_hyperlink);
-        name =findViewById(R.id.name);
 
-
-
-
-        //Hyper link
         AlreadySignUp_hyperlink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,47 +80,5 @@ public class register extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-//                startActivity(new Intent(register.this, chat.class));
-                user = email.getText().toString();
-                pass = password.getText().toString();
-                ConfirmPass = confirmPassword.getText().toString();
-
-//                if(user.equals("")){
-//                    email.setError("Can't be a blank");
-//                }
-//                else if(pass.equals("")){
-//                    password.setError("Can't be a blank");
-//                }
-//                else if(ConfirmPass.equals("")){
-//                    confirmPassword.setError("Can't be a blank");
-//                }
-//                else if(pass.length()<8){
-//                    password.setError("At least 8 characters long");
-//                }
-//                else{
-//                    final ProgressDialog pd = new ProgressDialog(register.this);
-//                    pd.setMessage("Loading...");
-//                    pd.show();
-                    ChatClient.getInstance().register(email.getText().toString(),password.getText().toString(),name.getText().toString());
-                    System.out.println("Register done");
-                    startActivity(new Intent(register.this, login.class));
-//
-
-//
-                }
-
-//                startActivity(new Intent(register.this, chat.class));
-//            }
-        });
-
     }
-
-//    public void registerUser(RegisterRequest registerRequest){
-//        Call<RegisterResponse> RegisterResponceCall =
-//    }
 }
