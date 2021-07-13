@@ -44,6 +44,8 @@ public class friendList extends AppCompatActivity {
         add = (ImageView)findViewById(R.id.add);
         usersList = findViewById(R.id.usersList);
 
+        
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,31 +63,33 @@ public class friendList extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text = input.getText().toString();
-                        ChatClient.getInstance().updateFriendList(m_Text);
+                        String name = ChatClient.getInstance().updateFriendList(m_Text);
 
-//                        FriendList fd =
-//                        String name = response.getUsername().toString();
-                        String name = FriendList.getDefaultInstance().toString();
+                        if(name.equals(null)){
+                            System.out.println("Friend is not available in frindlistClass");
+                            startActivity(new Intent(friendList.this,friendList.class));
+                        }else{
+                            System.out.println("frind is available in frendlist class");
+//                            arrayStrings.add(m_Text);
+                            arrayStrings.add(name);
+//
+                            ArrayAdapter<String> itemsAdapter =
+                                    new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
+                            usersList = (ListView) findViewById(R.id.usersList);
+                            usersList.setAdapter(itemsAdapter);
 
-                        arrayStrings.add(m_Text);
-//                        arrayStrings.add(name);
-
-                        ArrayAdapter<String> itemsAdapter =
-                                new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
-                        usersList = (ListView) findViewById(R.id.usersList);
-                        usersList.setAdapter(itemsAdapter);
-
-                        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Intent intent = new Intent(getApplicationContext(), chat.class);
+                            usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(getApplicationContext(), chat.class);
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("email", m_Text);
 //                                intent.putExtra("email", bundle);
-                                startActivity(intent);
-                            }
-                        });
-
+                                    startActivity(intent);
+                                }
+                            });
+//                            startActivity(new Intent(friendList.this,chat.class).putExtra("Email",email));
+                        }
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

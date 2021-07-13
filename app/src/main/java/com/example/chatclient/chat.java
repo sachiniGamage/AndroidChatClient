@@ -24,6 +24,7 @@ public class chat extends Activity {
     Button sendComment;
     EditText text_send;
     ImageView ProfileImage;
+
 //    FrameLayout displayChat
 
 
@@ -45,6 +46,8 @@ public class chat extends Activity {
         sendComment = (Button) findViewById(R.id.sendComment);
         displayChat =  findViewById(R.id.displayChat);
 
+        //TODO: add fromuser and touser 
+
         displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
         System.out.println("display chat1");
         displayChat.setMovementMethod(new ScrollingMovementMethod());
@@ -63,7 +66,7 @@ public class chat extends Activity {
     //go to friend list
     private void imageAndName(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
-        username = findViewById(R.id.userName);
+//        username = findViewById(R.id.userName);
 
 //        Bundle b = getIntent().getExtras();
 //        String email = (String) b.get("email") ;

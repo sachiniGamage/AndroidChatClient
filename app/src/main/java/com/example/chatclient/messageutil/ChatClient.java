@@ -157,11 +157,6 @@ public class ChatClient implements Runnable {
         if (authStub == null) {
             this.authStub = AuthenticateUserGrpc.newBlockingStub(channel);
         }
-//         email = LoginUser.getDefaultInstance().getEmail();
-//         password = LoginUser.getDefaultInstance().getPassword();
-//        LoginUser user = LoginUser.newBuilder().setEmail(email).setPassword(password).build();
-//        LoginUser user1 = LoginUser.getDefaultInstance();
-
         String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes());
         String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
 
@@ -177,17 +172,15 @@ public class ChatClient implements Runnable {
             System.out.println("login successful");
             return true;
         }
-
-
     }
 
     public void updateName(String name){
         initConnection();
         if (updateStub == null) {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
-
         }
         System.out.println("UpdateStub");
+
         Edit edit1 = Edit.newBuilder().setUsername(name).build();
         RegisterUser username = updateStub.updateName(edit1);
 
@@ -206,7 +199,17 @@ public class ChatClient implements Runnable {
 //        FriendList.getDefaultInstance().getUsername();
         FriendList response = updateStub.addFriend(friendrequest);;
 
-        return response.getUsername().toString();
+//        return response.getUsername().toString();
+        if (response.getUsername().equals(null)){
+            System.out.println("Friend is not available");
+            return null;
+        }else{
+            System.out.println("Friend is available - chatClient");
+            System.out.println(response.getUsername());
+            String frndName  = response.getUsername().getUsername().toString();
+            return frndName;
+        }
+
 
 //        FriendList response ;
 //        try {
