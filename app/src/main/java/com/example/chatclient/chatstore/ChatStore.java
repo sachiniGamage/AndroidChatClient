@@ -1,16 +1,22 @@
 package com.example.chatclient.chatstore;
 
+import java.util.ArrayList;
+
 public class ChatStore {
     // static friendlist // TODO: Later
     // static email
     // static token
     // static username
-
+    static ArrayList<String> friendList ;
     static String email;
     static String username;
     static String token;
 
     public ChatStore() {
+    }
+
+    public static ArrayList<String> getFriendList() {
+        return friendList;
     }
 
     public static String getEmail() {
@@ -35,5 +41,9 @@ public class ChatStore {
 
     public static void setToken(String token) {
         ChatStore.token = token;
+    }
+
+    public static void setFriendList(ArrayList<String> friendList) {
+        ChatStore.friendList = friendList;
     }
 }

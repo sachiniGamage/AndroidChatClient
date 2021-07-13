@@ -2,6 +2,7 @@ package com.example.chatclient.messageutil;
 
 import android.app.Dialog;
 
+import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.stub.*;
 
 import java.util.ArrayList;
@@ -170,8 +171,28 @@ public class ChatClient implements Runnable {
             return false;
         }else{
             System.out.println("login successful");
+            getFriendlist(email);
             return true;
         }
+    }
+
+    private void getFriendlist(String email){
+        initConnection();
+        if (updateStub == null) {
+            this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
+            System.out.println("UpdateStub");
+        }
+        //This should be GetFriends in proto
+        ViewFriends friendrequest = ViewFriends.newBuilder().setMyemail(email).build();
+
+        ViewFriends response = updateStub.getFriends(friendrequest);
+        ArrayList arrayList = new ArrayList();
+        for (RegisterUser registerUser : response.getFriendsInListList()) {
+            arrayList.add(registerUser.getUsername());
+            System.out.println(arrayList);
+        }
+        ChatStore.setFriendList(arrayList);
+
     }
 
     public void updateName(String name){

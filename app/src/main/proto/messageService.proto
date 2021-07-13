@@ -58,6 +58,12 @@ message FriendList{
     RegisterUser username = 3;
 }
 
+message ViewFriends{
+    string myemail = 1;
+    repeated RegisterUser friendsInList = 2;
+    repeated RegisterUser friendsNameInList =3;
+}
+
 service ChatService {
     rpc Chat(stream ChatMessage) returns (stream ChatMessageFromServer);
 }
@@ -70,4 +76,5 @@ service AuthenticateUser{
 service UpdateUser{
     rpc UpdateName(Edit) returns(RegisterUser);
     rpc AddFriend(FriendList) returns(FriendList);
+    rpc GetFriends(ViewFriends) returns(ViewFriends);
 }
