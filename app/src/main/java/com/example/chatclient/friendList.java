@@ -94,11 +94,23 @@ public class friendList extends AppCompatActivity {
                             usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent(getApplicationContext(), chat.class);
-                                    startActivity(intent);
+//                                  String name=  usersList.getSelectedItem().toString();
+                                    String name= usersList.getItemAtPosition(position).toString();
+                                    startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name));
                                 }
                             });
-//                            startActivity(new Intent(friendList.this,chat.class).putExtra("Email",email));
+
+//                            usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                @Override
+//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                    Intent intent = new Intent(getApplicationContext(), chat.class);
+//////                                Bundle bundle = new Bundle();
+//////                                bundle.putString("email", m_Text);
+//////                                intent.putExtra("email", bundle);
+//                                    startActivity(intent);
+////                                    startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name));
+//                                }
+//                            });
                         }
                     }
                 });
@@ -109,9 +121,18 @@ public class friendList extends AppCompatActivity {
                     }
                 });
                 builder.show();
+
             }
         });
 
+        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//               String name=  usersList.getSelectedItem().toString();
+                String name= usersList.getItemAtPosition(position).toString();
+                startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name));
+            }
+        });
     }
 
 

@@ -25,7 +25,7 @@ public class ChatClient implements Runnable {
     private Channel channel;
     private StreamObserver<ChatMessage> reqObserver;
     private Queue<String> msgQueue = new LinkedBlockingQueue<>();
-    private ArrayList<String> messagingList = new ArrayList<String>();
+    private ArrayList<String> msgArr = new ArrayList<String>();
     private List<String> msgList = new ArrayList<>();
     private  ArrayList<String> friendArr = new ArrayList<String>();
     private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
@@ -46,7 +46,8 @@ public class ChatClient implements Runnable {
     public void addMsgToQueue(String message) {
         System.out.println("Message Added to the queue" + message);
         msgQueue.add(message);
-//        messagingList.add(message);
+
+        msgArr.add(message);
     }
 
 
@@ -99,6 +100,9 @@ public class ChatClient implements Runnable {
 //    }
 
     public String getMsgFromQueue(){
+        for(int i=0; i<50 ; i++){
+            
+        }
         return msgQueue.peek();
     }
 
@@ -108,8 +112,6 @@ public class ChatClient implements Runnable {
         while (msgQueue.isEmpty()) {
                 Thread.sleep(1000);
         }
-
-
         String msg = msgQueue.poll();
 //        String message1 = messagingList.set(0,msg);
 //        Iterator<String> iterator = msgQueue.iterator();

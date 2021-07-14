@@ -16,6 +16,8 @@ import com.example.chatclient.stub.ChatMessage;
 import com.example.chatclient.stub.ChatMessageFromServer;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,6 +26,7 @@ public class chat extends Activity {
     Button sendComment;
     EditText text_send;
     ImageView ProfileImage;
+    ArrayList<String> msgArr = new ArrayList<String>();
 
 //    FrameLayout displayChat
 
@@ -35,18 +38,16 @@ public class chat extends Activity {
         new Thread(ChatClient.getInstance()).start();
 
         sendMsg();
-        imageAndName();
+        image();
+        FriendName();
 
     }
 
     //send the message and show it in the text view
     private void sendMsg(){
-//        username = (TextView) findViewById(R.id.userName);
         text_send = (EditText) findViewById(R.id.textSend);
         sendComment = (Button) findViewById(R.id.sendComment);
         displayChat =  findViewById(R.id.displayChat);
-
-        //TODO: add fromuser and touser 
 
         displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
         System.out.println("display chat1");
@@ -54,6 +55,7 @@ public class chat extends Activity {
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                msgArr.add(text_send.toString());
                 ChatClient.getInstance().addMsgToQueue(text_send.getText().toString());
                 displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
                 displayChat.setMovementMethod(new ScrollingMovementMethod());
@@ -64,13 +66,9 @@ public class chat extends Activity {
     }
 
     //go to friend list
-    private void imageAndName(){
+    private void image(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
-//        username = findViewById(R.id.userName);
 
-//        Bundle b = getIntent().getExtras();
-//        String email = (String) b.get("email") ;
-//        username.setText(email);
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,5 +76,13 @@ public class chat extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    private  void FriendName(){
+        username = findViewById(R.id.userName);
+        Intent intent = getIntent();
+
+        String name = intent.getStringExtra("Name");
+        username.setText(name);
     }
 }
