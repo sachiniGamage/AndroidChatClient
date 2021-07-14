@@ -52,7 +52,7 @@ public class ChatClient implements Runnable {
 
     //channel
     public void initConnection() {
-        String target = "10.0.2.2:50052";
+        String target = "192.168.8.104:50052";
         if (channel == null) {
             synchronized (new Object()) {
                 if (channel == null) {
@@ -171,11 +171,14 @@ public class ChatClient implements Runnable {
             return false;
         }else{
             System.out.println("login successful");
+            //mage email address ekata adaala friendsla
             getFriendlist(email);
+
             return true;
         }
     }
 
+    // mage email address ekata adaala friendsla
     private void getFriendlist(String email){
         initConnection();
         if (updateStub == null) {
@@ -186,15 +189,22 @@ public class ChatClient implements Runnable {
         ViewFriends friendrequest = ViewFriends.newBuilder().setMyemail(email).build();
 
         ViewFriends response = updateStub.getFriends(friendrequest);
+        System.out.println("getFriendsInListCount"+response.getFriendsInListCount());
+        System.out.println("getFriendsNameInListCount"+response.getFriendsNameInListCount());
         ArrayList arrayList = new ArrayList();
         for (RegisterUser registerUser : response.getFriendsInListList()) {
+            System.out.println("*************************GetFriendlist************************");
+            System.out.println("***************************************************************");
+
             arrayList.add(registerUser.getUsername());
             System.out.println(arrayList);
         }
+
         ChatStore.setFriendList(arrayList);
 
     }
 
+    // profile name
     public void updateName(String name){
         initConnection();
         if (updateStub == null) {
@@ -209,38 +219,30 @@ public class ChatClient implements Runnable {
 
     }
 
-    public String updateFriendList(String email){
+    //add new friend
+    public String updateFriendList(String emailf){
         initConnection();
         if (updateStub == null) {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
             System.out.println("UpdateStub");
         }
-        FriendList friendrequest = FriendList.newBuilder().setFriendsEmail(email).build();
+        String myemail = ChatStore.getEmail();
+        AddFriendReq friendrequest = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).build();
 //        FriendList friendList = updateStub.addFriend(friendrequest);
 //        FriendList.getDefaultInstance().getUsername();
-        FriendList response = updateStub.addFriend(friendrequest);;
+        AddFriendReq response = updateStub.addFriend(friendrequest);;
 
 //        return response.getUsername().toString();
-        if (response.getUsername().equals(null)){
+        if (response.getDetail().equals(null)){
             System.out.println("Friend is not available");
             return null;
         }else{
             System.out.println("Friend is available - chatClient");
-            System.out.println(response.getUsername());
-            String frndName  = response.getUsername().getUsername().toString();
+            System.out.println(response.getDetail().getUsername().getUsername());
+            String frndName  = response.getDetail().getUsername().getUsername().toString();
+
             return frndName;
         }
-
-
-//        FriendList response ;
-//        try {
-//            response = updateStub.addFriend(friendrequest);
-//        }catch (Exception e){
-//            System.out.println(e);
-//        }
-//        logger.info(response.getUsername().toString());
-
-
     }
 
 

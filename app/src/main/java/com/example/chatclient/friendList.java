@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.messageutil.ChatClient;
 import com.example.chatclient.stub.FriendList;
 
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
 
 public class friendList extends AppCompatActivity {
 
-    ImageView ProfileImage,add;
+    ImageView ProfileImage,add_btn;
     private String m_Text ;
     private ListView usersList;
     protected ArrayList<String> arrayStrings = new ArrayList<String>();
@@ -41,12 +42,22 @@ public class friendList extends AppCompatActivity {
     }
 
     private void AddNewFriend(){
-        add = (ImageView)findViewById(R.id.add);
+        add_btn = (ImageView)findViewById(R.id.add);
         usersList = findViewById(R.id.usersList);
 
-        
 
-        add.setOnClickListener(new View.OnClickListener() {
+        arrayStrings = ChatStore.getFriendList();
+
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
+        usersList = (ListView) findViewById(R.id.usersList);
+        usersList.setAdapter(itemsAdapter);
+
+
+
+
+
+        add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(friendList.this);
@@ -71,20 +82,19 @@ public class friendList extends AppCompatActivity {
                         }else{
                             System.out.println("frind is available in frendlist class");
 //                            arrayStrings.add(m_Text);
+//                            arrayStrings = ChatStore.getFriendList();
+
                             arrayStrings.add(name);
 //
-                            ArrayAdapter<String> itemsAdapter =
+                            ArrayAdapter<String> itemsAdapter1 =
                                     new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
                             usersList = (ListView) findViewById(R.id.usersList);
-                            usersList.setAdapter(itemsAdapter);
+                            usersList.setAdapter(itemsAdapter1);
 
                             usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Intent intent = new Intent(getApplicationContext(), chat.class);
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("email", m_Text);
-//                                intent.putExtra("email", bundle);
                                     startActivity(intent);
                                 }
                             });

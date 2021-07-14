@@ -63,7 +63,6 @@ public class login extends AppCompatActivity {
                         System.out.println("Login failed");
                         startActivity(new Intent(login.this, login.class));
                     }
-
                 }
             }
         });

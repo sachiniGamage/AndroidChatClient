@@ -58,6 +58,11 @@ message FriendList{
     RegisterUser username = 3;
 }
 
+message AddFriendReq{
+    string myemail = 1;
+    FriendList detail=2;
+}
+
 message ViewFriends{
     string myemail = 1;
     repeated RegisterUser friendsInList = 2;
@@ -75,6 +80,6 @@ service AuthenticateUser{
 
 service UpdateUser{
     rpc UpdateName(Edit) returns(RegisterUser);
-    rpc AddFriend(FriendList) returns(FriendList);
+    rpc AddFriend(AddFriendReq) returns(AddFriendReq);
     rpc GetFriends(ViewFriends) returns(ViewFriends);
 }
