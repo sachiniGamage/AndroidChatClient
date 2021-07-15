@@ -1,6 +1,8 @@
 package com.example.chatclient.chatstore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChatStore {
     // static friendlist // TODO: Later
@@ -8,11 +10,21 @@ public class ChatStore {
     // static token
     // static username
     static ArrayList<String> friendList ;
+    static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     static String email;
     static String username;
     static String token;
 
     public ChatStore() {
+    }
+
+    public static void addFriendNameEmailToMap(String name,String email){
+        emailFriendNameMap.put(name,email);
+    }
+
+    public static String getFriendEmailFromNameToMap(String name){
+
+        return emailFriendNameMap.get(name);
     }
 
     public static ArrayList<String> getFriendList() {

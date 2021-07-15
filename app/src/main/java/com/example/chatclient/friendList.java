@@ -96,7 +96,8 @@ public class friendList extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                                  String name=  usersList.getSelectedItem().toString();
                                     String name= usersList.getItemAtPosition(position).toString();
-                                    startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name));
+
+                                    startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name).putExtra("email",ChatStore.getFriendEmailFromNameToMap(name)));
                                 }
                             });
 
@@ -130,7 +131,8 @@ public class friendList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //               String name=  usersList.getSelectedItem().toString();
                 String name= usersList.getItemAtPosition(position).toString();
-                startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name));
+
+                startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name).putExtra("email", ChatStore.getFriendEmailFromNameToMap(name)));
             }
         });
     }

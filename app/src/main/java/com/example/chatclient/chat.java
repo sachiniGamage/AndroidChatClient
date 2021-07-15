@@ -55,6 +55,9 @@ public class chat extends Activity {
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                String name = intent.getStringExtra("email");
+                ChatClient.getInstance().processMsg(name,text_send.getText().toString());
                 msgArr.add(text_send.toString());
                 ChatClient.getInstance().addMsgToQueue(text_send.getText().toString());
                 displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
@@ -83,6 +86,8 @@ public class chat extends Activity {
         Intent intent = getIntent();
 
         String name = intent.getStringExtra("Name");
+        String email = intent.getStringExtra("email");
         username.setText(name);
+//        ChatClient.getInstance().processMsg(name);
     }
 }

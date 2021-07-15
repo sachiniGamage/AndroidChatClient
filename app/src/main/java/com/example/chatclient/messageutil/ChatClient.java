@@ -73,7 +73,7 @@ public class ChatClient implements Runnable {
             @Override
             public void onNext(ChatMessageFromServer value) {
 
-                System.out.println("recieved message " + value.getMessage().getMessage());
+                System.out.println("recieved message " + value.getMessage().getMessage() +"from" + value.getFrom().getFrom() );
                 getMsgList().add(value.getMessage().getMessage());
             }
             @Override
@@ -86,11 +86,12 @@ public class ChatClient implements Runnable {
                 System.out.println("completed");
             }
         });
-        try {
-            processMessageQueue();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+////            processMessageQueue();
+////            processMsg();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -101,7 +102,7 @@ public class ChatClient implements Runnable {
 
     public String getMsgFromQueue(){
         for(int i=0; i<50 ; i++){
-            
+//            msgArr.add(i);
         }
         return msgQueue.peek();
     }
@@ -128,6 +129,19 @@ public class ChatClient implements Runnable {
 //        }
     }
 
+    public void processMsg(String touser,String msg){
+        initConnection();
+        if (updateStub == null) {
+            this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
+            System.out.println("UpdateStub");
+        }
+        String fromuser = ChatStore.getEmail();
+//        String msg = null;
+
+        ChatMessage message = ChatMessage.newBuilder().setFrom(fromuser).setTo(touser).setMessage(msg).build();
+        reqObserver.onNext(message);
+
+    }
 
     public List<String> getMsgList() {
         return msgList;
@@ -199,12 +213,16 @@ public class ChatClient implements Runnable {
             System.out.println("***************************************************************");
 
             arrayList.add(registerUser.getUsername());
+
+            ChatStore.addFriendNameEmailToMap(registerUser.getUsername(),registerUser.getEmail());
             System.out.println(arrayList);
         }
 
         ChatStore.setFriendList(arrayList);
 
     }
+    
+
 
     // profile name
     public void updateName(String name){
@@ -242,6 +260,7 @@ public class ChatClient implements Runnable {
             System.out.println("Friend is available - chatClient");
             System.out.println(response.getDetail().getUsername().getUsername());
             String frndName  = response.getDetail().getUsername().getUsername().toString();
+
 
             return frndName;
         }
