@@ -18,6 +18,8 @@ import com.example.chatclient.stub.ChatMessageFromServer;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,6 +29,7 @@ public class chat extends Activity {
     EditText text_send;
     ImageView ProfileImage;
     ArrayList<String> msgArr = new ArrayList<String>();
+//    private List<Observer> observers = new ArrayList<Observer>();
 
 //    FrameLayout displayChat
 
@@ -37,10 +40,13 @@ public class chat extends Activity {
         setContentView(R.layout.activity_chat);
         new Thread(ChatClient.getInstance()).start();
 
+
+        Intent intent = getIntent();
         sendMsg();
         image();
         FriendName();
-
+        System.out.println("display chat2");
+        ChatClient.getInstance().addChat(intent.getStringExtra("email"),this);
     }
 
     //send the message and show it in the text view
@@ -49,7 +55,9 @@ public class chat extends Activity {
         sendComment = (Button) findViewById(R.id.sendComment);
         displayChat =  findViewById(R.id.displayChat);
 
-        displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
+
+
+//        displayChat.setText(ChatClient.getInstance().);
         System.out.println("display chat1");
         displayChat.setMovementMethod(new ScrollingMovementMethod());
         sendComment.setOnClickListener(new View.OnClickListener() {
@@ -58,9 +66,11 @@ public class chat extends Activity {
                 Intent intent = getIntent();
                 String name = intent.getStringExtra("email");
                 ChatClient.getInstance().processMsg(name,text_send.getText().toString());
-                msgArr.add(text_send.toString());
-                ChatClient.getInstance().addMsgToQueue(text_send.getText().toString());
-                displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
+//                msgArr.add(text_send.toString());
+//                ChatClient.getInstance().addMsgToQueue(text_send.getText().toString());
+//                displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
+//                ChatClient.getInstance().watchMessages();
+//                displayChat.setText();
                 displayChat.setMovementMethod(new ScrollingMovementMethod());
                 System.out.println("display chat1");
             }
@@ -89,5 +99,15 @@ public class chat extends Activity {
         String email = intent.getStringExtra("email");
         username.setText(name);
 //        ChatClient.getInstance().processMsg(name);
+    }
+
+    public void DisplayChatMsgs(String msg){
+        displayChat =  findViewById(R.id.displayChat);
+
+        Intent intent = getIntent();
+        System.out.println("display chat4");
+
+        displayChat.setText(msg);
+        System.out.println("display chat msg");
     }
 }

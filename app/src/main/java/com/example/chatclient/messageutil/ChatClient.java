@@ -1,13 +1,14 @@
 package com.example.chatclient.messageutil;
 
-import android.app.Dialog;
-
+import com.example.chatclient.chat;
 import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.stub.*;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
@@ -28,8 +29,16 @@ public class ChatClient implements Runnable {
     private ArrayList<String> msgArr = new ArrayList<String>();
     private List<String> msgList = new ArrayList<>();
     private  ArrayList<String> friendArr = new ArrayList<String>();
+//    private  ArrayList<String> chatFrnds = new ArrayList<String>();
+    private ArrayList<String> recievedMsgArr = new ArrayList<>();
+    private Map<String,chat> ChatObserver = new HashMap<String, chat>();
+    private Map<String,ArrayList<String>> chatFrndsMap = new HashMap<String, ArrayList<String>>();
+    String currentChatFriendName;
+    chat chatUI;
+//    static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
 
+//    private chat currentChatUser;
 
     @Override
     public void run() {
@@ -68,13 +77,25 @@ public class ChatClient implements Runnable {
     }
 
     //check whether the messages are received to the server side
-    private void watchMessages() {
+    public void watchMessages() {
         reqObserver = chatStub.chat(new StreamObserver<ChatMessageFromServer>() {
             @Override
             public void onNext(ChatMessageFromServer value) {
 
-                System.out.println("recieved message " + value.getMessage().getMessage() +"from" + value.getFrom().getFrom() );
+                System.out.println("recieved message " + value.getMessage().getMessage() +" :  from" + value.getFrom().getFrom() );
                 getMsgList().add(value.getMessage().getMessage());
+                String msgs = value.getMessage().getMessage();
+                String key = value.getFrom().getFrom();
+                if (chatFrndsMap.get(key)== null) {
+                    chatFrndsMap.put(key, new ArrayList<String>());
+                }
+                System.out.println("display chat3");
+                    chatFrndsMap.get(key).add(msgs);
+
+                if("abc" == key) {
+                    System.out.println("display chat5");
+                    chatUI.DisplayChatMsgs(msgs);
+                }
             }
             @Override
             public void onError(Throwable t) {
@@ -92,6 +113,12 @@ public class ChatClient implements Runnable {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+
+    }
+
+    public void addChat(String user, chat observer){
+        this.chatUI = observer;
+        this.currentChatFriendName = user;
     }
 
 
@@ -100,10 +127,13 @@ public class ChatClient implements Runnable {
 //        return messagingList.get(0);
 //    }
 
+    public void getCurrentUser(String user){
+
+    }
+
     public String getMsgFromQueue(){
-        for(int i=0; i<50 ; i++){
-//            msgArr.add(i);
-        }
+
+
         return msgQueue.peek();
     }
 
@@ -139,7 +169,12 @@ public class ChatClient implements Runnable {
 //        String msg = null;
 
         ChatMessage message = ChatMessage.newBuilder().setFrom(fromuser).setTo(touser).setMessage(msg).build();
+
         reqObserver.onNext(message);
+
+
+//        msgArr.add(message.toString());
+        System.out.println(msgArr.add(message.toString()));
 
     }
 
@@ -260,7 +295,6 @@ public class ChatClient implements Runnable {
             System.out.println("Friend is available - chatClient");
             System.out.println(response.getDetail().getUsername().getUsername());
             String frndName  = response.getDetail().getUsername().getUsername().toString();
-
 
             return frndName;
         }
