@@ -46,7 +46,7 @@ public class chat extends Activity {
         image();
         FriendName();
         System.out.println("display chat2");
-        ChatClient.getInstance().addChat(intent.getStringExtra("email"),this);
+        ChatClient.getInstance().addChat(intent.getStringExtra("Name"),this);
     }
 
     //send the message and show it in the text view

@@ -20,8 +20,7 @@ message ChatMessage {
 message ChatMessageFromServer {
     string timestamp = 1;
     ChatMessage message = 2;
-    ChatMessage from = 3;
-    ChatMessage chatid=4;
+    ChatMessage chatid=3;
 }
 
 message ChatMessageToServer {

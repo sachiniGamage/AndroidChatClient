@@ -82,17 +82,19 @@ public class ChatClient implements Runnable {
             @Override
             public void onNext(ChatMessageFromServer value) {
 
-                System.out.println("recieved message " + value.getMessage().getMessage() +" :  from" + value.getFrom().getFrom() );
+                System.out.println("recieved message " + value.getMessage().getMessage() +" :  from"  );
                 getMsgList().add(value.getMessage().getMessage());
                 String msgs = value.getMessage().getMessage();
-                String key = value.getFrom().getFrom();
+                String key = value.getMessage().getFrom();
+                System.out.println(key +" is the key");
                 if (chatFrndsMap.get(key)== null) {
                     chatFrndsMap.put(key, new ArrayList<String>());
                 }
                 System.out.println("display chat3");
                     chatFrndsMap.get(key).add(msgs);
 
-                if("abc" == key) {
+                    String currentFriendEmail = ChatStore.getFriendEmailFromNameToMap(currentChatFriendName);
+                if(currentFriendEmail.equals(key)) {
                     System.out.println("display chat5");
                     chatUI.DisplayChatMsgs(msgs);
                 }
