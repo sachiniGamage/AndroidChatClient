@@ -107,7 +107,20 @@ public class chat extends Activity {
         Intent intent = getIntent();
         System.out.println("display chat4");
 
-        displayChat.setText(msg);
-        System.out.println("display chat msg");
+
+
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                // Stuff that updates the UI
+                displayChat.setText(msg);
+                System.out.println("display chat msg");
+
+            }
+        });
     }
+
+
 }

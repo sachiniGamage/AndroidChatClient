@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 
 
@@ -44,7 +46,17 @@ public class ChatClient implements Runnable {
     public void run() {
         initConnection();
         watchMessages();
+
+
     }
+
+
+//    Metadata.Key<String> jwtKey = Metadata.Key.of("jwt", Metadata.ASCII_STRING_MARSHALLER);
+//                    headers.put(jwtKey, jwt);
+//                    metadataApplier.apply(headers);
+//} catch (Throwable e) {
+//        metadataApplier.fail(Status.UNAUTHENTICATED.withCause(e));
+//        }
 
     public static ChatClient getInstance() {
         return chatClient;
@@ -68,6 +80,11 @@ public class ChatClient implements Runnable {
                 if (channel == null) {
                     this.channel =  ManagedChannelBuilder.forTarget(target).usePlaintext().build();
                     this.chatStub = ChatServiceGrpc.newStub(channel);
+
+                    Metadata headers = new Metadata();
+                    Metadata.Key<String> metaKey = Metadata.Key.of("fromuser", Metadata.ASCII_STRING_MARSHALLER);
+                    headers.put(metaKey,ChatStore.getEmail());
+                    chatStub = MetadataUtils.attachHeaders(chatStub,headers);
                 }
             }
         }
@@ -82,7 +99,7 @@ public class ChatClient implements Runnable {
             @Override
             public void onNext(ChatMessageFromServer value) {
 
-                System.out.println("recieved message " + value.getMessage().getMessage() +" :  from"  );
+                System.out.println("recieved message " + value.getMessage().getMessage() );
                 getMsgList().add(value.getMessage().getMessage());
                 String msgs = value.getMessage().getMessage();
                 String key = value.getMessage().getFrom();
@@ -174,6 +191,11 @@ public class ChatClient implements Runnable {
 
         reqObserver.onNext(message);
 
+
+//            Metadata headers = new Metadata();
+//            Metadata.Key<String> metaKey = Metadata.Key.of("fromuser", Metadata.ASCII_STRING_MARSHALLER);
+//            headers.put(metaKey,fromuser);
+//            chatStub = MetadataUtils.attachHeaders(chatStub,headers);
 
 //        msgArr.add(message.toString());
         System.out.println(msgArr.add(message.toString()));
@@ -301,6 +323,10 @@ public class ChatClient implements Runnable {
             return frndName;
         }
     }
+
+
+
+
 
 
 
