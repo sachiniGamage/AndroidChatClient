@@ -1,13 +1,18 @@
 package com.example.chatclient;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -55,6 +60,8 @@ public class chat extends Activity {
         sendComment = (Button) findViewById(R.id.sendComment);
         displayChat =  findViewById(R.id.displayChat);
 
+        Context currentContext = this;
+
 
 
 //        displayChat.setText(ChatClient.getInstance().);
@@ -73,6 +80,42 @@ public class chat extends Activity {
 //                displayChat.setText();
                 displayChat.setMovementMethod(new ScrollingMovementMethod());
                 System.out.println("display chat1");
+
+                //-------
+
+
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        // Stuff that updates the UI
+//                displayChat.setText(msg);
+
+                        //------
+
+                        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
+
+                        TextView textView1 = new TextView(currentContext);
+//                        textView1.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
+//                                AbsListView.LayoutParams.WRAP_CONTENT));
+
+                        AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
+                                AbsListView.LayoutParams.WRAP_CONTENT);
+                        textView1.setGravity( Gravity.RIGHT);
+
+                        textView1.setText(text_send.getText().toString());
+                        textView1.setBackgroundColor(0xff66ff6); // hex color 0xAARRGGBB
+                        textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
+                        linearLayout.addView(textView1);
+                        //------
+
+                        System.out.println("display chat msg");
+                        displayChat.setMovementMethod(new ScrollingMovementMethod());
+
+                    }
+                });
             }
         });
 
@@ -106,17 +149,30 @@ public class chat extends Activity {
 
         Intent intent = getIntent();
         System.out.println("display chat4");
-
-
-
+        Context currentContext = this;
         runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
 
                 // Stuff that updates the UI
-                displayChat.setText(msg);
+//                displayChat.setText(msg);
+
+                //------
+
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
+
+                TextView textView1 = new TextView(currentContext);
+                textView1.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
+                        AbsListView.LayoutParams.WRAP_CONTENT));
+                textView1.setText(msg);
+                textView1.setBackgroundColor(0xff66ff66); // hex color 0xAARRGGBB
+                textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
+                linearLayout.addView(textView1);
+                //------
+
                 System.out.println("display chat msg");
+                displayChat.setMovementMethod(new ScrollingMovementMethod());
 
             }
         });
