@@ -83,8 +83,10 @@ public class ChatClient implements Runnable {
 
                     Metadata headers = new Metadata();
                     Metadata.Key<String> metaKey = Metadata.Key.of("fromuser", Metadata.ASCII_STRING_MARSHALLER);
-                    headers.put(metaKey,ChatStore.getEmail());
-                    chatStub = MetadataUtils.attachHeaders(chatStub,headers);
+                    if(ChatStore.getEmail() != (null)) {
+                        headers.put(metaKey, ChatStore.getEmail());
+                        chatStub = MetadataUtils.attachHeaders(chatStub, headers);
+                    }
                 }
             }
         }
