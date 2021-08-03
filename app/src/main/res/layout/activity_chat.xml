@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -42,10 +46,11 @@
 
         </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/ll_example"
         android:layout_width="match_parent"
-        android:layout_height="616dp"
+        android:layout_height="656dp"
         android:orientation="vertical"
         android:layout_gravity="center"
         android:layout_marginTop="1dp">
@@ -55,12 +60,13 @@
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="600dp"/>-->
 
+
             <TextView
                 android:id="@+id/displayChat"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
-
+                android:scrollbars = "vertical"
                 android:elevation="2dp"
                 android:padding="10dp"
                 android:textColor="#fff"
@@ -183,3 +189,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

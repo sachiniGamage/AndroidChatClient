@@ -35,7 +35,7 @@ public class ChatClient implements Runnable {
     private ArrayList<String> recievedMsgArr = new ArrayList<>();
     private Map<String,chat> ChatObserver = new HashMap<String, chat>();
     private Map<String,ArrayList<String>> chatFrndsMap = new HashMap<String, ArrayList<String>>();
-    String currentChatFriendName;
+    String currentChatFriendName,currentToEmail;
     chat chatUI;
 //    static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
@@ -104,18 +104,23 @@ public class ChatClient implements Runnable {
                 System.out.println("recieved message " + value.getMessage().getMessage() );
                 getMsgList().add(value.getMessage().getMessage());
                 String msgs = value.getMessage().getMessage();
-                String key = value.getMessage().getFrom();
-                System.out.println(key +" is the key");
-                if (chatFrndsMap.get(key)== null) {
-                    chatFrndsMap.put(key, new ArrayList<String>());
+                String from = value.getMessage().getFrom();
+                String to = value.getMessage().getTo();
+                System.out.println(from +" is the key");
+                if (chatFrndsMap.get(from)== null) {
+                    chatFrndsMap.put(from, new ArrayList<String>());
                 }
                 System.out.println("display chat3");
-                    chatFrndsMap.get(key).add(msgs);
+                    chatFrndsMap.get(from).add(msgs);
 
                     String currentFriendEmail = ChatStore.getFriendEmailFromNameToMap(currentChatFriendName);
-                if(currentFriendEmail.equals(key)) {
+
+                if(currentFriendEmail.equals(from) ) {
                     System.out.println("display chat5");
                     chatUI.DisplayChatMsgs(msgs);
+                }else if(currentFriendEmail.equals(to)){
+                    System.out.println("messages equal to :" + msgs);
+                    chatUI.displayToMsg(msgs);
                 }
             }
             @Override

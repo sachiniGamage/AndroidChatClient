@@ -67,6 +67,8 @@ public class chat extends Activity {
 //        displayChat.setText(ChatClient.getInstance().);
         System.out.println("display chat1");
         displayChat.setMovementMethod(new ScrollingMovementMethod());
+
+
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,44 +83,41 @@ public class chat extends Activity {
                 displayChat.setMovementMethod(new ScrollingMovementMethod());
                 System.out.println("display chat1");
 
-                //-------
-
-
-
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        // Stuff that updates the UI
-//                displayChat.setText(msg);
-
-                        //------
-
-                        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
-
-                        TextView textView1 = new TextView(currentContext);
-//                        textView1.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
-//                                AbsListView.LayoutParams.WRAP_CONTENT));
-
-                        AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
-                                AbsListView.LayoutParams.WRAP_CONTENT);
-                        textView1.setGravity( Gravity.RIGHT);
-
-                        textView1.setText(text_send.getText().toString());
-                        textView1.setBackgroundColor(0xff66ff6); // hex color 0xAARRGGBB
-                        textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
-                        linearLayout.addView(textView1);
-                        //------
-
-                        System.out.println("display chat msg");
-                        displayChat.setMovementMethod(new ScrollingMovementMethod());
-
-                    }
-                });
+                //----
+                displayToMsg(text_send.getText().toString());
             }
         });
 
+    }
+
+    public void displayToMsg(String msg){
+        Context currentContext = this;
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
+
+                TextView textView1 = new TextView(currentContext);
+//                        textView1.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
+//                                AbsListView.LayoutParams.WRAP_CONTENT));
+
+                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
+                        AbsListView.LayoutParams.WRAP_CONTENT);
+                textView1.setGravity( Gravity.RIGHT);
+
+                textView1.setText(msg);
+                textView1.setBackgroundColor(0xff66ff6); // hex color 0xAARRGGBB
+                textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
+                linearLayout.addView(textView1);
+                //------
+
+                System.out.println("display chat msg to");
+                displayChat.setMovementMethod(new ScrollingMovementMethod());
+
+            }
+        });
     }
 
     //go to friend list
@@ -154,11 +153,6 @@ public class chat extends Activity {
 
             @Override
             public void run() {
-
-                // Stuff that updates the UI
-//                displayChat.setText(msg);
-
-                //------
 
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
 

@@ -27,6 +27,11 @@ public class ChatStore {
         return emailFriendNameMap.get(name);
     }
 
+    public static String getFriendEmailToNameToMap(String name){
+
+        return emailFriendNameMap.get(name);
+    }
+
     public static ArrayList<String> getFriendList() {
         return friendList;
     }
