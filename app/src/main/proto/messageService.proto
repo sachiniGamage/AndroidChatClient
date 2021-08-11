@@ -34,6 +34,7 @@ message RegisterUser{
     string email=1;
     string password=2;
     string username=3;
+    string publicKey = 4;
 }
 
 message LoginUser{
@@ -55,6 +56,7 @@ message FriendList{
     string FriendsEmail = 1;
     RegisterUser email =2;
     RegisterUser username = 3;
+    string publicKey = 4;
 }
 
 message AddFriendReq{

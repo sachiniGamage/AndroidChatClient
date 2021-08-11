@@ -4,6 +4,11 @@ import com.example.chatclient.chat;
 import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.stub.*;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -12,6 +17,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
+
+import javax.crypto.Cipher;
 
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
@@ -220,15 +227,16 @@ public class ChatClient implements Runnable {
 
 
     //pass register details to server
-    public  void register(String email,String password,String username){
+    public  void register(String email,String password,String pblcKey,String username){
         initConnection();
         if (authStub == null) {
             this.authStub = AuthenticateUserGrpc.newBlockingStub(channel);
         }
+        String pblicKey = "a";
         System.out.println(email);
         System.out.println(password);
         System.out.println(username);
-        RegisterUser user = RegisterUser.newBuilder().setEmail(email).setPassword(password).setUsername(username).build();
+        RegisterUser user = RegisterUser.newBuilder().setEmail(email).setPassword(password).setPublicKey(pblcKey).setUsername(username).build();
         authStub.register(user);
         System.out.println("inside register");
     }
@@ -331,9 +339,48 @@ public class ChatClient implements Runnable {
         }
     }
 
+    public static KeyPair generateKeyPair() throws Exception {
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+        generator.initialize(2048, new SecureRandom());
+        KeyPair pair = generator.generateKeyPair();
+
+        return pair;
+    }
+
+//    //First generate a public/private key pair
+//    KeyPair pair = generateKeyPair();
+//
+//    //Our secret message
+//    String message = "the answer to life the universe and everything";
+//
+//    //Encrypt the message
+//    String cipherText = encryption(message, pair.getPublic());
+//
+//    //Now decrypt it
+//    String decipheredMessage = decryption(cipherText, pair.getPrivate());
+//
+//System.out.println(decipheredMessage);
+
+//encrypt
+    public static String encryption(String plainText, PublicKey publicKey) throws Exception {
+        Cipher encryptCipher = Cipher.getInstance("RSA");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+        byte[] cipherText = encryptCipher.doFinal(plainText.getBytes());
+
+        return Base64.getEncoder().encodeToString(cipherText);
+    }
 
 
+    //decrypt
+    public static String decryption(String cipherText, PrivateKey privateKey) throws Exception {
+        byte[] bytes = Base64.getDecoder().decode(cipherText);
 
+        Cipher decriptCipher = Cipher.getInstance("RSA");
+        decriptCipher.init(Cipher.DECRYPT_MODE, privateKey);
+
+        return new String(decriptCipher.doFinal(bytes));
+    }
 
 
 

@@ -11,8 +11,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.chatclient.messageutil.ChatClient;
+import com.example.chatclient.messageutil.E2EE;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Base64;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class register extends AppCompatActivity {
 
@@ -21,6 +34,14 @@ public class register extends AppCompatActivity {
     Button signup;
     private String user,pass,ConfirmPass;
 
+    PublicKey publicKey;
+    PrivateKey privateKey;
+    KeyPairGenerator kpg;
+    KeyPair kp;
+
+    private final static String CRYPTO_METHOD = "RSA";
+    private final static int CRYPTO_BITS = 2048;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +49,21 @@ public class register extends AppCompatActivity {
 
         signup();
         hyperlink();
+
+    }
+
+    public void generateKeyPair() {
+
+        try{
+        kpg = KeyPairGenerator.getInstance(CRYPTO_METHOD);
+        kpg.initialize(CRYPTO_BITS);
+        kp = kpg.genKeyPair();
+        publicKey = kp.getPublic();
+        privateKey = kp.getPrivate();
+
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    }
 
     }
 
@@ -46,6 +82,12 @@ public class register extends AppCompatActivity {
                 pass = password.getText().toString();
                 ConfirmPass = confirmPassword.getText().toString();
 
+                if(publicKey == null){
+                    generateKeyPair();
+                }
+
+
+
                 if(user.equals("")) {
                     email.setError("Can't be a blank");
                 }
@@ -60,8 +102,10 @@ public class register extends AppCompatActivity {
                 }
                 else{
 
-                    ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(), name.getText().toString());
+
+                    ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(), Base64.getEncoder().encodeToString(publicKey.getEncoded()), name.getText().toString());
                     System.out.println("Register done");
+                    System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
                     startActivity(new Intent(register.this, login.class));
 
                 }
