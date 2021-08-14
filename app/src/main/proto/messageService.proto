@@ -45,7 +45,7 @@ message LoginUser{
 
 message Token{
     string token=1;
-
+    string publicKey=2;
 }
 
 message Edit{
@@ -62,6 +62,8 @@ message FriendList{
 message AddFriendReq{
     string myemail = 1;
     FriendList detail=2;
+    string addedEmailf1 =3;
+    string addbymyemail=4;
 }
 
 message ViewFriends{

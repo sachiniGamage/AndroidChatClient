@@ -1,5 +1,6 @@
 package com.example.chatclient.chatstore;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +15,20 @@ public class ChatStore {
     static String email;
     static String username;
     static String token;
+    static PublicKey publicKey;
 
     public ChatStore() {
     }
 
-    public static void addFriendNameEmailToMap(String name,String email){
+    public static PublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    public static void setPublicKey(PublicKey publicKey) {
+        ChatStore.publicKey = publicKey;
+    }
+
+    public static void addFriendNameEmailToMap(String name, String email){
         emailFriendNameMap.put(name,email);
     }
 

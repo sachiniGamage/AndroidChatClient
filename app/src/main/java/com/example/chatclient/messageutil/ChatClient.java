@@ -4,27 +4,42 @@ import com.example.chatclient.chat;
 import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.stub.*;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 public class ChatClient implements Runnable {
@@ -320,8 +335,17 @@ public class ChatClient implements Runnable {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
             System.out.println("UpdateStub");
         }
+
+        String randomString = UUID.randomUUID().toString();
+
+
+
+//        String encodedaddByMyemail = Base64.getEncoder().encodeToString(randomString.getBytes());
+//        String encodedaddedEmailf1 = Base64.getEncoder().encodeToString(randomString.getBytes());
+        String addByMyemail = "xyz";
+        String addedEmailf1 = "efg";
         String myemail = ChatStore.getEmail();
-        AddFriendReq friendrequest = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).build();
+        AddFriendReq friendrequest = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).setAddedEmailf1(addedEmailf1).setAddbymyemail(addByMyemail).build();
 //        FriendList friendList = updateStub.addFriend(friendrequest);
 //        FriendList.getDefaultInstance().getUsername();
         AddFriendReq response = updateStub.addFriend(friendrequest);;
@@ -334,18 +358,114 @@ public class ChatClient implements Runnable {
             System.out.println("Friend is available - chatClient");
             System.out.println(response.getDetail().getUsername().getUsername());
             String frndName  = response.getDetail().getUsername().getUsername().toString();
+            String publicKey = response.getDetail().getPublicKey();
+            System.out.println("get public key");
+            System.out.println(publicKey);
+
+
+
+            try {
+                //Creating a Cipher object
+                Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+
+                //Initializing a Cipher object
+                byte[] decodedBytes = Base64.getDecoder().decode(publicKey);
+                X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedBytes);
+                KeyFactory kf = KeyFactory.getInstance("RSA");
+                PublicKey pb = kf.generatePublic(spec);
+                System.out.println(pb);
+
+//                String decodedString = new String(decodedBytes);
+////                RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(decodedString, 10), new BigInteger(publicExponentStr, 10));
+//                KeyFactory factory = KeyFactory.getInstance("RSA");
+////                PublicKey pupKey = factory.generatePublic(publicSpec);
+
+
+
+               String friendEncrypt= encrypt(randomString,pb);
+
+
+
+
+
+//                cipher.init(Cipher.ENCRYPT_MODE, encodedaddedEmailf1);
+
+                //Adding data to the cipher
+                byte[] input = "Welcome to Tutorialspoint".getBytes();
+                cipher.update(input);
+
+                //encrypting the data
+                byte[] cipherText = cipher.doFinal();
+                System.out.println(new String(cipherText, "UTF8"));
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (InvalidKeySpecException e) {
+                e.printStackTrace();
+            }
+
+//            catch (InvalidKeySpecException e) {
+//                e.printStackTrace();
+//            }
+
 
             return frndName;
         }
     }
 
-    public static KeyPair generateKeyPair() throws Exception {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-        generator.initialize(2048, new SecureRandom());
-        KeyPair pair = generator.generateKeyPair();
 
-        return pair;
+
+
+
+    public static String encrypt(String plainText, PublicKey publicKey)  {
+        Cipher encryptCipher = null;
+        try {
+            encryptCipher = Cipher.getInstance("RSA");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        }
+        try {
+            encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
+
+        byte[] cipherText = new byte[0];
+        try {
+            cipherText = encryptCipher.doFinal(plainText.getBytes(UTF_8));
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+
+        return Base64.getEncoder().encodeToString(cipherText);
     }
+
+
+
+
+
+
+
+
+
+//    public static KeyPair generateKeyPair() throws Exception {
+//        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+//        generator.initialize(2048, new SecureRandom());
+//        KeyPair pair = generator.generateKeyPair();
+//
+//        return pair;
+//    }
 
 //    //First generate a public/private key pair
 //    KeyPair pair = generateKeyPair();
@@ -362,25 +482,25 @@ public class ChatClient implements Runnable {
 //System.out.println(decipheredMessage);
 
 //encrypt
-    public static String encryption(String plainText, PublicKey publicKey) throws Exception {
-        Cipher encryptCipher = Cipher.getInstance("RSA");
-        encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
-
-        byte[] cipherText = encryptCipher.doFinal(plainText.getBytes());
-
-        return Base64.getEncoder().encodeToString(cipherText);
-    }
-
-
-    //decrypt
-    public static String decryption(String cipherText, PrivateKey privateKey) throws Exception {
-        byte[] bytes = Base64.getDecoder().decode(cipherText);
-
-        Cipher decriptCipher = Cipher.getInstance("RSA");
-        decriptCipher.init(Cipher.DECRYPT_MODE, privateKey);
-
-        return new String(decriptCipher.doFinal(bytes));
-    }
+//    public static String encryption(String plainText, PublicKey publicKey) throws Exception {
+//        Cipher encryptCipher = Cipher.getInstance("RSA");
+//        encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+//
+//        byte[] cipherText = encryptCipher.doFinal(plainText.getBytes());
+//
+//        return Base64.getEncoder().encodeToString(cipherText);
+//    }
+//
+//
+//    //decrypt
+//    public static String decryption(String cipherText, PrivateKey privateKey) throws Exception {
+//        byte[] bytes = Base64.getDecoder().decode(cipherText);
+//
+//        Cipher decriptCipher = Cipher.getInstance("RSA");
+//        decriptCipher.init(Cipher.DECRYPT_MODE, privateKey);
+//
+//        return new String(decriptCipher.doFinal(bytes));
+//    }
 
 
 

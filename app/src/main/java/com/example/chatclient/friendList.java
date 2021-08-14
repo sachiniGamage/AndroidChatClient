@@ -20,6 +20,7 @@ import com.example.chatclient.stub.FriendList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class friendList extends AppCompatActivity {
@@ -73,6 +74,7 @@ public class friendList extends AppCompatActivity {
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String randomString = UUID.randomUUID().toString();
                         m_Text = input.getText().toString();
                         String name = ChatClient.getInstance().updateFriendList(m_Text);
 
