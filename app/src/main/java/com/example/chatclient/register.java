@@ -133,21 +133,15 @@ public class register extends AppCompatActivity {
 //                cipher.init(Cipher.ENCRYPT_MODE, encodedaddedEmailf1);
 
                         //Adding data to the cipher
-                        byte[] input = "Welcome to Tutorialspoint".getBytes();
-                        cipher.update(input);
-
-                        //encrypting the data
-                        byte[] cipherText = cipher.doFinal();
-                        System.out.println(new String(cipherText, "UTF8"));
+//                        byte[] input = "Welcome to Tutorialspoint".getBytes();
+//                        cipher.update(input);
+//
+//                        //encrypting the data
+//                        byte[] cipherText = cipher.doFinal();
+//                        System.out.println(new String(cipherText, "UTF8"));
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {
-                        e.printStackTrace();
-                    } catch (BadPaddingException e) {
-                        e.printStackTrace();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (IllegalBlockSizeException e) {
                         e.printStackTrace();
                     } catch (InvalidKeySpecException e) {
                         e.printStackTrace();

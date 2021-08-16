@@ -271,6 +271,25 @@ public class ChatClient implements Runnable {
         LoginUser user = LoginUser.newBuilder().setEmail(email).setPassword(password).build();
         System.out.println("login1");
         Token token = authStub.login(user);
+
+
+        byte[] decodedBytes = Base64.getDecoder().decode(token.getPublicKey());
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedBytes);
+        KeyFactory kf = null;
+        try {
+            kf = KeyFactory.getInstance("RSA");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        PublicKey pb = null;
+        try {
+            pb = kf.generatePublic(spec);
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        System.out.println(pb);
+
+        ChatStore.setPublicKey(pb);
         if(token.getToken().equals("")){
             System.out.println("User not available");
             return false;
@@ -278,6 +297,8 @@ public class ChatClient implements Runnable {
             System.out.println("login successful");
             //mage email address ekata adaala friendsla
             getFriendlist(email);
+
+
 
             return true;
         }
@@ -342,10 +363,10 @@ public class ChatClient implements Runnable {
 
 //        String encodedaddByMyemail = Base64.getEncoder().encodeToString(randomString.getBytes());
 //        String encodedaddedEmailf1 = Base64.getEncoder().encodeToString(randomString.getBytes());
-        String addByMyemail = "xyz";
-        String addedEmailf1 = "efg";
+//        String addByMyemail = "xyz";
+//        String addedEmailf1 = "efg";
         String myemail = ChatStore.getEmail();
-        AddFriendReq friendrequest = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).setAddedEmailf1(addedEmailf1).setAddbymyemail(addByMyemail).build();
+        AddFriendReq friendrequest = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).build();
 //        FriendList friendList = updateStub.addFriend(friendrequest);
 //        FriendList.getDefaultInstance().getUsername();
         AddFriendReq response = updateStub.addFriend(friendrequest);;
@@ -361,8 +382,6 @@ public class ChatClient implements Runnable {
             String publicKey = response.getDetail().getPublicKey();
             System.out.println("get public key");
             System.out.println(publicKey);
-
-
 
             try {
                 //Creating a Cipher object
@@ -384,28 +403,22 @@ public class ChatClient implements Runnable {
 
                String friendEncrypt= encrypt(randomString,pb);
 
+                String myEncrypt = encrypt(randomString,ChatStore.getPublicKey());
 
-
-
-
+                AddFriendReq friendrequest1 = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).setAddedEmailf1(friendEncrypt).setAddbymyemail(myEncrypt).build();
+                AddFriendReq response1 = updateStub.addFriend(friendrequest1);
 //                cipher.init(Cipher.ENCRYPT_MODE, encodedaddedEmailf1);
 
                 //Adding data to the cipher
-                byte[] input = "Welcome to Tutorialspoint".getBytes();
-                cipher.update(input);
+
+
 
                 //encrypting the data
-                byte[] cipherText = cipher.doFinal();
-                System.out.println(new String(cipherText, "UTF8"));
+
+
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
                 e.printStackTrace();
             } catch (InvalidKeySpecException e) {
                 e.printStackTrace();
