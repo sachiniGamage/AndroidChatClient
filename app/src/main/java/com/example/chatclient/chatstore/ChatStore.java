@@ -16,6 +16,7 @@ public class ChatStore {
     static ArrayList<String> friendList ;
     static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     static Map<String, String> emailSymmetricKeyMap = new HashMap<String, String>();
+    static Map<String, String> friendEmailDecryptedKeyMap = new HashMap<String, String>();
     static String email;
     static String username;
     static String token;
@@ -46,9 +47,17 @@ public class ChatStore {
         emailFriendNameMap.put(name,email);
     }
 
+    public static void addFriendEmailDecryptedKeyMap(String emailF, String decryptedKey){
+        friendEmailDecryptedKeyMap.put(emailF,decryptedKey);
+    }
+
     public static String getFriendEmailFromNameToMap(String name){
 
         return emailFriendNameMap.get(name);
+    }
+
+    public static String getDecryptedKeyFromFriendEmail(String emailF){
+        return friendEmailDecryptedKeyMap.get(emailF);
     }
 
     public static void addEmailSymmetricKeyToMap(String email, String symmetricKey){

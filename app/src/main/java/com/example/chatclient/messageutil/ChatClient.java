@@ -216,6 +216,8 @@ public class ChatClient implements Runnable {
         }
         String fromuser = ChatStore.getEmail();
 //        String msg = null;
+        String messages = msg;
+
 
         ChatMessage message = ChatMessage.newBuilder().setFrom(fromuser).setTo(touser).setMessage(msg).build();
 
@@ -329,10 +331,14 @@ public class ChatClient implements Runnable {
 
             ChatStore.addFriendNameEmailToMap(registerUser.getUsername(),registerUser.getEmail());
             ChatStore.addEmailSymmetricKeyToMap(registerUser.getEmail(),registerUser.getEncryptedKey());
+//            ChatStore.addFriendEmailDecryptedKeyMap(registerUser.getEmail(),registerUser.getEncryptedKey());
 
             try {
                 String myDecrypt = decryption(registerUser.getEncryptedKey(),ChatStore.getPrivateKey());
                 System.out.println("myDecrypt"+myDecrypt);
+
+                ChatStore.addFriendEmailDecryptedKeyMap(registerUser.getEmail(),myDecrypt);
+
             } catch (NoSuchPaddingException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
