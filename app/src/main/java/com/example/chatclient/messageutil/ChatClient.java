@@ -317,7 +317,7 @@ public class ChatClient implements Runnable {
 
         ViewFriends response = updateStub.getFriends(friendrequest);
         System.out.println("getFriendsInListCount"+response.getFriendsInListCount());
-        System.out.println("getFriendsNameInListCount"+response.getFriendsNameInListCount());
+//        System.out.println("getFriendsNameInListCount"+response.getFriendsNameInListCount());
 //        System.out.println(response.getFriendsInListList());
         ArrayList arrayList = new ArrayList();
         for (RegisterUser registerUser : response.getFriendsInListList()) {
@@ -325,9 +325,25 @@ public class ChatClient implements Runnable {
             System.out.println("***************************************************************");
 
             arrayList.add(registerUser.getUsername());
+            System.out.println("Encrypted key " + registerUser.getEncryptedKey());
 
             ChatStore.addFriendNameEmailToMap(registerUser.getUsername(),registerUser.getEmail());
             ChatStore.addEmailSymmetricKeyToMap(registerUser.getEmail(),registerUser.getEncryptedKey());
+
+            try {
+                String myDecrypt = decryption(registerUser.getEncryptedKey(),ChatStore.getPrivateKey());
+                System.out.println("myDecrypt"+myDecrypt);
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
             System.out.println(arrayList);
         }
         ChatStore.setFriendList(arrayList);
@@ -368,10 +384,10 @@ public class ChatClient implements Runnable {
         AddFriendReq friendrequest = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).build();
         AddFriendReq response = updateStub.addFriend(friendrequest);
         System.out.println("public key" + response.getDetail().getPublicKey());
-        if (response.getDetail().equals(null)){
-            System.out.println("Friend is not available");
-            return null;
-        }else{
+//        if (response.getDetail().equals(null)){
+//            System.out.println("Friend is not available");
+//            return null;
+//        }else{
             System.out.println("Friend is available - chatClient");
             System.out.println(response.getDetail().getUsername().getUsername());
             String frndName  = response.getDetail().getUsername().getUsername().toString();
@@ -425,7 +441,7 @@ public class ChatClient implements Runnable {
 //                e.printStackTrace();
 //            }
             return frndName;
-        }
+//        }
     }
 
 

@@ -67,45 +67,16 @@ public class GenPrivateKey {
     public static void genKeyPairIfNotExist1(Context context) throws IOException, NoSuchAlgorithmException {
         String prvtkeyFile = "prvtKey.txt";
         String pbKeyFile = "pbKey.txt";
-//        String prvtKeyString = "MIIEowIBAAKCAQBX6cuHVEt/ItXf//tUSkn2ZtBaDO0rL0aoifZu0CrUFk5RyKiB" +
-//                "jmdbJD96EuPhDIkobDKyKhi3td1H0vn4iMyBkoPzrapajzQ4MG3x8LB+GBE1Sy5x" +
-//                "dBU0XyX5oagzNAYyMWB+doPvqusnu8Xv5Hwu4BjXTlR2N7Wi/9RRtaAOuaJQJ+9l" +
-//                "zmK14Nzkb+8oZAvUq0LEhz6/CRgFMXwBF9PPK281nJVjFRaMeNF857crHTvRnTnk" +
-//                "+i//fR8l62SpOrS6tZq8X6EY16yF8uWw/sPKfZFKjRXLMxUIo4E/lExLatf6rCQy" +
-//                "SMYmVKn3p881SyjGkv+ewlLAVpbgvaEIPCR3AgMBAAECggEALwvu33086cy6qCVV" +
-//                "WsZmznY3Cfng8jtalNdACg1c3iMRxrKberm6lgvP7IQvb0BGJlvAxZfBoo6w3L8L" +
-//                "BvYueyjtdHp7r/ry9x7zt4YW7WPz0ZFqSUzWDDDfIbhhSwWMS1AhU4wZDylortrO" +
-//                "EpMz4eILaS2CBcHKcnB2L0QDY91TBkW4TJ8HrmC8Vz1139HqFFcVtADHVgXOQdOU" +
-//                "N4PjDuRP6mTWF2GKn4Z5MQTkJXpyD4MoZloqnRUVPtQz8t/qsS0fA9Jv7g5xTC1e" +
-//                "25Hq+8nCE6vSE6dBz2q342XiNvYAwJMDO3DIHaf6AgSpeLVAfuM5ApA2LyR87dJ+" +
-//                "yaPoAQKBgQChE96IPVHqeCWf56w3sncr7bNFJ9Ja6qJa+uUlNpWCftKSyYdFqHBG" +
-//                "vHRK2VUxIxq9A+AoX/fr1rHFs1p45iy0zKElJMLcpjh2+QwGxJSNl8/zGiIaMnHQ" +
-//                "Onv19CUrS/OGtZIRPGKY+gQg7SP9aOeKtA1m0etBDo4Kr5DOpJaeCwKBgQCLuF5v" +
-//                "btsnU2SAyH0UrXWtozkV0rt20QkK/8Ya6hl7OHfvd9gcXqz46g2wRxcKZL/83MQi" +
-//                "gFGO977WCDhCIjV978ZTmZZRDqm5j3schcCWVNzQ5N8HR4TZbZiKuXcHj6PB7DLO" +
-//                "Lvq0isuw6OO8VBtCITXF1pVA4bSbAeFI1z9SxQKBgQCYzVp674C35oX6rTFoHLqE" +
-//                "R5eacO5SJOcjW4LozGEES/7CFL9oSyNHVxsSrhzs4hpJWFXatz9e0GoP29ZlfiTG" +
-//                "1p+/tqHL4zsJUbQg73bk4zD3ssDLDTN+jxxs89AWxJQeJDyOcTQvXm1wNsW/bTbJ" +
-//                "E4jrExQSwRXp+SZrgSMIhQKBgFjIvpGW4wIZVtsTC5CRLR86gjLg5yj4agOoRo2h" +
-//                "xrFrT6NHB3f3nXjK2gnzEqwTG4CmFKhL3Ae6XHULYhx8OnudWuySw1cctzNn/nZA" +
-//                "dAHTSUIgvayVgNDdeLpmYkHWv9uhqSMl7T++lvMC+nwZAf1CtzXRRqSlCCwbxLmR" +
-//                "tfZ1AoGBAIWu2Oo4fyR3l4oadG3LDbpzsCLUva5MYPlngPirvY+QhMJoMkM71Gd2" +
-//                "zizddFxXnEeVW2McyCPSWBvQq39qX+sgWmjb/1xnvn4+AzE9f/iZThMaESjSWQ2O" +
-//                "Zo9L6W3VxYADPtr+DwziG1pt77uM0hK7RhqQ3n+Op16svJ0gnTAT";
-//        String publicKeyString = "MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBX6cuHVEt/ItXf//tUSkn2" +
-//                "ZtBaDO0rL0aoifZu0CrUFk5RyKiBjmdbJD96EuPhDIkobDKyKhi3td1H0vn4iMyB" +
-//                "koPzrapajzQ4MG3x8LB+GBE1Sy5xdBU0XyX5oagzNAYyMWB+doPvqusnu8Xv5Hwu" +
-//                "4BjXTlR2N7Wi/9RRtaAOuaJQJ+9lzmK14Nzkb+8oZAvUq0LEhz6/CRgFMXwBF9PP" +
-//                "K281nJVjFRaMeNF857crHTvRnTnk+i//fR8l62SpOrS6tZq8X6EY16yF8uWw/sPK" +
-//                "fZFKjRXLMxUIo4E/lExLatf6rCQySMYmVKn3p881SyjGkv+ewlLAVpbgvaEIPCR3" +
-//                "AgMBAAE=";
 
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(2048);
         KeyPair pair = generator.generateKeyPair();
 
-        String privateKey = Base64.getEncoder().encodeToString(pair.getPrivate().getEncoded());
-        String publicKey = Base64.getEncoder().encodeToString(pair.getPublic().getEncoded());
+        String privateKey = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCntGa4euy8Trv8CiHjlYqkvdKh0yO/+ujKscwreuRpzu8siTT+FwPisSPgKb/eRTB2JMyROr5pp2Iqf/yM0xYrWMXvCGeigAEydNG00Lp5nGJrGsTa1UCJx9/Bulftk3VdPlxL2PdIuNEG95uacGKxS3T8BV2V+vDHNe03jxsp+8E0rIiBMbDlcX00Ta1kkAWDH7NyTOQ+j65vKP+PhUcIhd53oPbYtusA78c19BElQEYs5bizGSr0eGA4GC8OqsgZdwboStfLai3rF3i+lA9MFiWP1WzA8hMJH/dyX3T/nljcXndVt35HZbWJoUjfUBLTLG/8bWytpY12xo76xMFbAgMBAAECggEAQoEKvxuYJ7C9YVyPRdX2jg/sqFm3cplImaDaS1/HlqIGPM4IYr6zvsDqbimAOd+MMT20ld8KxZEoH5xzhVDsGLJyg7D8j/ddAipLQv4HBNTcPob2C6XHmxvVAtknp0Hzp89kAHwAzCjmU3H7lcn9iTtYH9zs2N4Tf5xF/uNULVhPwGOebR3cEPTW5oDHOtK5vWrLO0I8tE5G/+mcMRspbYVQfWeTFLCUYDTh4rkdr3ANDdUI5FfmbwoWYoyAaSJCHU7agq8p1cX677VW/jczl+WMrFk2aQLJQEfnRvg5ZZ807rVlalGrsg8XTtzzaOiyj1yOseSSbBAboyWaJ7xAoQKBgQDuE46MydTzT0xOOSptIz+pKmCMzqIbcbCWx+NgUaCyOiIZvJ2ukKUNlUAPrH5j1HIZvYMqYvfnF6SkIIeSfoddUjItKLRao4lskHRZBnLwhvbFIVVFNGFIzsRHzN/5jJaO8+WbxYINnmCMa1P7XZNbYw76W00QO2vom6n2zWtx0QKBgQC0VJJRP8vXLfCLeN7QR9XTuKdsyvSX28j3L1QUzuLaKlrYD0MReMNliNS5Q7+6SvyGO1XDV+nrF5RBTTDvkMCYosskTNg8E0hiLu25LAQ4os//R2fiu4etAuEumUJJ1bR6pLVgd3bB5gP0jDMPDqARNA53fJbEy1Nx5c6Jmu3/awKBgDqDDfbmJ/NAmwVioV2/WwcNhjs1Ebxi/b6hE+35QeBrzzO6Gprrq9UhyGPRxiJs9ToETLdfKYRfWDSKVieX91blO7XDmkfoh37qJd43aopY8U9TuOxQSlSllLH81VM0zVAG+3iEW0lTknEQc8yEnBHKz8SSKeeCYywBDg29QNnxAoGATvWY+6qLfrTG1sseBOTvY70+0gwr/TJnVJSMpG/SNOTG0kQcgdH2/MZlHpnjoZaj68KfUuFzs1SnvdAm1T70leDyQfrD08o9r4AM5z+2uXXQzV5expCGX+Ma5mSE+f9w/yKPqKWmglBM+w9IbBdjTyUUEI2lFpZQ+1Y8kVQdUfECgYB9mat/hV9sje470k2yzpRQD7fOspaX8yOQnqVT/B0s94KtAy2t54QjoqOuYiFqP46wvIFb3U36ftt5DweRuFSrGXxIBuir3K0UIB5v6vPerWAyp0Nx/tLx7+GKzPkhVdbn7mC2EgKr3AFzISYaFMOSg6Obuh1sN99FDtrKOfu9iA==";
+        String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp7RmuHrsvE67/Aoh45WKpL3SodMjv/royrHMK3rkac7vLIk0/hcD4rEj4Cm/3kUwdiTMkTq+aadiKn/8jNMWK1jF7whnooABMnTRtNC6eZxiaxrE2tVAicffwbpX7ZN1XT5cS9j3SLjRBvebmnBisUt0/AVdlfrwxzXtN48bKfvBNKyIgTGw5XF9NE2tZJAFgx+zckzkPo+ubyj/j4VHCIXed6D22LbrAO/HNfQRJUBGLOW4sxkq9HhgOBgvDqrIGXcG6ErXy2ot6xd4vpQPTBYlj9VswPITCR/3cl90/55Y3F53Vbd+R2W1iaFI31AS0yxv/G1sraWNdsaO+sTBWwIDAQAB";
+
+//        String privateKey = Base64.getEncoder().encodeToString(pair.getPrivate().getEncoded());
+//        String publicKey = Base64.getEncoder().encodeToString(pair.getPublic().getEncoded());
 
         System.out.println(privateKey);
 

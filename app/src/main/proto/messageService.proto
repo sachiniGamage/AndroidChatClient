@@ -70,8 +70,6 @@ message AddFriendReq{
 message ViewFriends{
     string myemail = 1;
     repeated RegisterUser friendsInList = 2;
-    repeated RegisterUser friendsNameInList =3;
-    string encryptedKey = 4;
 }
 
 service ChatService {
@@ -87,4 +85,5 @@ service UpdateUser{
     rpc UpdateName(Edit) returns(RegisterUser);
     rpc AddFriend(AddFriendReq) returns(AddFriendReq);
     rpc GetFriends(ViewFriends) returns(ViewFriends);
+    rpc AddFriendUpdate(AddFriendReq) returns(AddFriendReq);
 }
