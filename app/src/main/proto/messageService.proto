@@ -35,6 +35,7 @@ message RegisterUser{
     string password=2;
     string username=3;
     string publicKey = 4;
+    string encryptedKey = 5;
 }
 
 message LoginUser{
@@ -70,6 +71,7 @@ message ViewFriends{
     string myemail = 1;
     repeated RegisterUser friendsInList = 2;
     repeated RegisterUser friendsNameInList =3;
+    string encryptedKey = 4;
 }
 
 service ChatService {

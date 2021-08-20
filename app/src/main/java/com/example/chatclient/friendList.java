@@ -18,6 +18,7 @@ import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.messageutil.ChatClient;
 import com.example.chatclient.stub.FriendList;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -76,7 +77,12 @@ public class friendList extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String randomString = UUID.randomUUID().toString();
                         m_Text = input.getText().toString();
-                        String name = ChatClient.getInstance().updateFriendList(m_Text);
+                        String name = null;
+                        try {
+                            name = ChatClient.getInstance().updateFriendList(m_Text);
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
 
                         if(name.equals(null)){
                             System.out.println("Friend is not available in frindlistClass");

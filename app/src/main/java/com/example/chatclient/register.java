@@ -3,6 +3,7 @@ package com.example.chatclient;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.chatclient.chatstore.ChatStore;
+import com.example.chatclient.chatstore.GenPrivateKey;
 import com.example.chatclient.messageutil.ChatClient;
 import com.example.chatclient.messageutil.E2EE;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -45,6 +48,7 @@ public class register extends AppCompatActivity {
     PrivateKey privateKey;
     KeyPairGenerator kpg;
     KeyPair kp;
+
 
     private final static String CRYPTO_METHOD = "RSA";
     private final static int CRYPTO_BITS = 2048;
@@ -81,6 +85,15 @@ public class register extends AppCompatActivity {
         signup = findViewById(R.id.signup);
         name = findViewById(R.id.name);
 
+        try {
+            GenPrivateKey.genKeyPairIfNotExist1(this);
+            System.out.println(ChatStore.getPublicKey());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +106,6 @@ public class register extends AppCompatActivity {
                 if(publicKey == null){
                     generateKeyPair();
                 }
-
 
 
                 if(user.equals("")) {
@@ -124,6 +136,14 @@ public class register extends AppCompatActivity {
 
 
 
+                        byte[] decodedBytes1 = Base64.getDecoder().decode(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+                        X509EncodedKeySpec spec1 = new X509EncodedKeySpec(decodedBytes1);
+                        KeyFactory kf1 = KeyFactory.getInstance("RSA");
+                        PublicKey pb1 = kf.generatePublic(spec);
+                        System.out.println(pb1);
+
+
+
 //                String decodedString = new String(decodedBytes);
 ////                RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(decodedString, 10), new BigInteger(publicExponentStr, 10));
 //                KeyFactory factory = KeyFactory.getInstance("RSA");
@@ -147,8 +167,8 @@ public class register extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-
-                    ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(), Base64.getEncoder().encodeToString(publicKey.getEncoded()), name.getText().toString());
+                    ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(),  Base64.getEncoder().encodeToString(ChatStore.getPublicKey().getEncoded()), name.getText().toString());
+//                    ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(), Base64.getEncoder().encodeToString(publicKey.getEncoded()), name.getText().toString());
                     System.out.println("Register done");
                     System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
                     startActivity(new Intent(register.this, login.class));
