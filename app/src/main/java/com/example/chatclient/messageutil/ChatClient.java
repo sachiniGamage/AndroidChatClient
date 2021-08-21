@@ -6,7 +6,9 @@ import com.example.chatclient.stub.*;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -31,7 +33,10 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
@@ -133,18 +138,48 @@ public class ChatClient implements Runnable {
                 if (chatFrndsMap.get(from)== null) {
                     chatFrndsMap.put(from, new ArrayList<String>());
                 }
-                System.out.println("display chat3");
-                    chatFrndsMap.get(from).add(msgs);
+
+                try {
+                    String msg = givenPassword_whenDecrpt_thenSuccess(msgs);
+                    System.out.println("display chat3");
+                    chatFrndsMap.get(from).add(msg);
 
                     String currentFriendEmail = ChatStore.getFriendEmailFromNameToMap(currentChatFriendName);
 
-                if(currentFriendEmail.equals(from) ) {
-                    System.out.println("display chat5");
-                    chatUI.DisplayChatMsgs(msgs);
-                }else if(currentFriendEmail.equals(to)){
-                    System.out.println("messages equal to :" + msgs);
-                    chatUI.displayToMsg(msgs);
+                    if(currentFriendEmail.equals(from) ) {
+                        System.out.println("display chat5");
+                        chatUI.DisplayChatMsgs(msg);
+                    }else if(currentFriendEmail.equals(to)){
+                        System.out.println("messages equal to :" + msg);
+                        chatUI.displayToMsg(msg);
+                    }
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidAlgorithmParameterException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
                 }
+//                System.out.println("display chat3");
+//                    chatFrndsMap.get(from).add(msgs);
+
+//                    String currentFriendEmail = ChatStore.getFriendEmailFromNameToMap(currentChatFriendName);
+//
+//                if(currentFriendEmail.equals(from) ) {
+//                    System.out.println("display chat5");
+//                    chatUI.DisplayChatMsgs(msgs);
+//                }else if(currentFriendEmail.equals(to)){
+//                    System.out.println("messages equal to :" + msgs);
+//                    chatUI.displayToMsg(msgs);
+//                }
             }
             @Override
             public void onError(Throwable t) {
@@ -208,7 +243,7 @@ public class ChatClient implements Runnable {
 //        }
     }
 
-    public void processMsg(String touser,String msg){
+    public void processMsg(String touser,String msg) throws BadPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException {
         initConnection();
         if (updateStub == null) {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
@@ -219,7 +254,12 @@ public class ChatClient implements Runnable {
         String messages = msg;
 
 
-        ChatMessage message = ChatMessage.newBuilder().setFrom(fromuser).setTo(touser).setMessage(msg).build();
+        String msgs = givenPassword_whenEncrypt_thenSuccess(msg);
+        System.out.println("msg encrpt");
+
+//        encrypt(messages,ChatStore.getSymmetricKeyFromEmailToMap(touser));
+
+        ChatMessage message = ChatMessage.newBuilder().setFrom(fromuser).setTo(touser).setMessage(msgs).build();
 
         reqObserver.onNext(message);
 
@@ -250,7 +290,7 @@ public class ChatClient implements Runnable {
         if (authStub == null) {
             this.authStub = AuthenticateUserGrpc.newBlockingStub(channel);
         }
-        String pblicKey = "a";
+//        String pblicKey = "a";
         System.out.println(email);
         System.out.println(password);
         System.out.println(username);
@@ -448,6 +488,76 @@ public class ChatClient implements Runnable {
 //            }
             return frndName;
 //        }
+    }
+
+    String givenPassword_whenDecrpt_thenSuccess(String msg)
+            throws InvalidKeySpecException, NoSuchAlgorithmException,
+            IllegalBlockSizeException, InvalidKeyException, BadPaddingException,
+            InvalidAlgorithmParameterException, NoSuchPaddingException {
+
+        String cipherText = msg;
+        String password ="baeldung";
+        String salt = "12345678";
+        IvParameterSpec ivParameterSpec = AESUtil.generateIv();
+        SecretKey key = AESUtil.getKeyFromPassword(password,salt);
+        String decryptedCipherText = AESUtil.decryptPasswordBased(
+                cipherText, key, ivParameterSpec);
+
+        return decryptedCipherText;
+
+//        String decryptedCipherText = AESUtil.decryptPasswordBased(
+//                cipherText, key, ivParameterSpec);
+//        Assertions.assertEquals(plainText, decryptedCipherText);
+    }
+
+    String givenPassword_whenEncrypt_thenSuccess(String msg)
+            throws InvalidKeySpecException, NoSuchAlgorithmException,
+            IllegalBlockSizeException, InvalidKeyException, BadPaddingException,
+            InvalidAlgorithmParameterException, NoSuchPaddingException {
+
+        String plainText = msg;
+        String password = "baeldung";
+        String salt = "12345678";
+        IvParameterSpec ivParameterSpec = AESUtil.generateIv();
+        SecretKey key = AESUtil.getKeyFromPassword(password,salt);
+        String cipherText = AESUtil.encryptPasswordBased(plainText, key, ivParameterSpec);
+
+        return cipherText;
+
+//        String decryptedCipherText = AESUtil.decryptPasswordBased(
+//                cipherText, key, ivParameterSpec);
+//        Assertions.assertEquals(plainText, decryptedCipherText);
+    }
+
+
+
+
+    private static final String ALGORITHM = "AES";
+
+//    public String encrypt(final String valueEnc, final String secKey) {
+        public String encrypt(String msg, String symkey) {
+
+        String encryptedVal = null;
+
+        try {
+
+            KeyGenerator generator = KeyGenerator.getInstance("AES/CTR/PKCS5PADDING");
+            generator.init(128);
+            SecretKey key = generator.generateKey();
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+
+
+//            final Key key = generateKeyFromString(secKey);
+//            final Cipher c = Cipher.getInstance(ALGORITHM);
+//            c.init(Cipher.ENCRYPT_MODE, key);
+//            final byte[] encValue = c.doFinal(valueEnc.getBytes());
+//            encryptedVal = new Base64.Encoder().encode(encValue);
+        } catch(Exception ex) {
+            System.out.println("The Exception is=" + ex);
+        }
+
+        return encryptedVal;
     }
 
 

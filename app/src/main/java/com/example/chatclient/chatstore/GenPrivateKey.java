@@ -93,7 +93,7 @@ public class GenPrivateKey {
 
             ChatStore.setPublicKey(genPbkey(removeSuffix(publicKey,"\n")));
 //            ChatStore.setPublicKey(genPbkey(publicKey.trim()));
-            ChatStore.setPrivateKey(genPvtkey(removeSuffix(publicKey,"\n")));
+            ChatStore.setPrivateKey(genPvtkey(removeSuffix(privateKey,"\n")));
                     System.out.println("genPvtkey(privateKey)"+genPvtkey(privateKey));
                     pvtPbKey[0] = privateKey;
                     pvtPbKey[1] = publicKey;

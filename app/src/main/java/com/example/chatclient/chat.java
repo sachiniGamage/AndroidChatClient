@@ -22,11 +22,19 @@ import com.example.chatclient.stub.ChatMessageFromServer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class chat extends Activity {
     TextView username, displayChat;
@@ -74,7 +82,23 @@ public class chat extends Activity {
             public void onClick(View v) {
                 Intent intent = getIntent();
                 String name = intent.getStringExtra("email");
-                ChatClient.getInstance().processMsg(name,text_send.getText().toString());
+                try {
+                    ChatClient.getInstance().processMsg(name,text_send.getText().toString());
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (InvalidAlgorithmParameterException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
+                }
 //                msgArr.add(text_send.toString());
 //                ChatClient.getInstance().addMsgToQueue(text_send.getText().toString());
 //                displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
