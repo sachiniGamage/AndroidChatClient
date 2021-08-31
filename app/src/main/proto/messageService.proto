@@ -67,13 +67,47 @@ message AddFriendReq{
     string addbymyemail=4;
 }
 
+message AddFriendReqGrp{
+    string myemail = 1;
+    MakeGroup detail=2;
+    string friendEmails =3;
+    string addbymyemail=4;
+}
+
 message ViewFriends{
     string myemail = 1;
     repeated RegisterUser friendsInList = 2;
 }
 
+message MakeGroup{
+    int32 groupId = 1;
+    string groupName = 2;
+    string adminEmail =3;
+    string friendEmail =4;
+}
+
+message AddGrpFriendReq{
+    MakeGroup detail = 1;
+    FriendList details =2;
+    string myemail = 3;
+
+}
+
+message GroupMessage{
+    MakeGroup groupDetails =1;
+    string friendEmail =2;
+    string msg = 3;
+}
+
+message GroupMessageFromServer{
+    GroupMessage groupList = 1;
+    string timestamp =2;
+}
+
 service ChatService {
     rpc Chat(stream ChatMessage) returns (stream ChatMessageFromServer);
+
+    rpc GroupChat(stream GroupMessage) returns (stream GroupMessageFromServer);
 }
 
 service AuthenticateUser{
@@ -85,5 +119,7 @@ service UpdateUser{
     rpc UpdateName(Edit) returns(RegisterUser);
     rpc AddFriend(AddFriendReq) returns(AddFriendReq);
     rpc GetFriends(ViewFriends) returns(ViewFriends);
+    rpc AddFriendsToGroup(AddGrpFriendReq) returns(AddGrpFriendReq);
+    rpc CreateGroup(MakeGroup) returns (MakeGroup);
     rpc AddFriendUpdate(AddFriendReq) returns(AddFriendReq);
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chatclient">
-    <uses-permission android:name = "android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name = "android.permission.READ_EXTERNAL_STORAGE"/>
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatClient">
-        <activity android:name=".profile"></activity>
+        <activity android:name=".groupChat"></activity>
+        <activity android:name=".groups" />
+        <activity android:name=".profile" />
         <activity android:name=".friendList" />
         <activity android:name=".login" /> <!-- <meta-data android:name="com.google.android.actions" /> -->
         <activity android:name=".chat" />

@@ -30,6 +30,24 @@
             android:clickable="true"
             />
 
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:id="@+id/grpbtn"
+            android:src="@drawable/grp"
+            android:layout_marginLeft="180dp"
+            android:clickable="true"
+            />
+
+
+<!--        <Button-->
+<!--            android:id="@+id/groupBtn"-->
+<!--            android:layout_width="98dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_marginLeft="170dp"-->
+<!--            android:text="Group >" />-->
+
     </LinearLayout>
 <!--    <LinearLayout-->
 <!--        android:layout_width="wrap_content"-->
@@ -76,6 +94,8 @@
         android:layout_height="60dp"
         android:layout_marginLeft="330dp"
         android:src="@drawable/plus"/>
+
+
 
 
 </LinearLayout>

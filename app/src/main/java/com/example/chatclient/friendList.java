@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class friendList extends AppCompatActivity {
 
-    ImageView ProfileImage,add_btn;
+    ImageView ProfileImage,add_btn,grpbtn;
     private String m_Text ;
     private ListView usersList;
     protected ArrayList<String> arrayStrings = new ArrayList<String>();
@@ -80,6 +80,7 @@ public class friendList extends AppCompatActivity {
                         String name = null;
                         try {
                             name = ChatClient.getInstance().updateFriendList(m_Text);
+                            ChatStore.addFriendNameEmailToMap(name,m_Text);
                         } catch (NoSuchAlgorithmException e) {
                             e.printStackTrace();
                         }
@@ -148,10 +149,19 @@ public class friendList extends AppCompatActivity {
 
     private void image(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
+        grpbtn = (ImageView)findViewById(R.id.grpbtn);
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), profile.class);
+                startActivity(intent);
+            }
+        });
+
+        grpbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), groups.class);
                 startActivity(intent);
             }
         });

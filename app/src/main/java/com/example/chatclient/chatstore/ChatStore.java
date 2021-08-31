@@ -14,6 +14,7 @@ public class ChatStore {
     // static token
     // static username
     static ArrayList<String> friendList ;
+    static ArrayList<String> groupList;
     static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     static Map<String, String> emailSymmetricKeyMap = new HashMap<String, String>();
     static Map<String, String> friendEmailDecryptedKeyMap = new HashMap<String, String>();
@@ -75,6 +76,14 @@ public class ChatStore {
 
     public static ArrayList<String> getFriendList() {
         return friendList;
+    }
+
+    public static ArrayList<String> getGroupList(){
+        return groupList;
+    }
+
+    public static void setGroupList(ArrayList<String> groupList){
+        ChatStore.groupList = groupList;
     }
 
     public static String getEmail() {

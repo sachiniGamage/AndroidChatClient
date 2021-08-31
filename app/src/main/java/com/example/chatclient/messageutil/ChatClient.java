@@ -54,10 +54,12 @@ public class ChatClient implements Runnable {
     private static ChatClient chatClient = new ChatClient();
     private Channel channel;
     private StreamObserver<ChatMessage> reqObserver;
+    private StreamObserver<GroupMessage> reqObserverGrp;
     private Queue<String> msgQueue = new LinkedBlockingQueue<>();
     private ArrayList<String> msgArr = new ArrayList<String>();
     private List<String> msgList = new ArrayList<>();
     private  ArrayList<String> friendArr = new ArrayList<String>();
+    private ArrayList<String> grpArr = new ArrayList<String>();
 //    private  ArrayList<String> chatFrnds = new ArrayList<String>();
     private ArrayList<String> recievedMsgArr = new ArrayList<>();
     private Map<String,chat> ChatObserver = new HashMap<String, chat>();
@@ -100,23 +102,32 @@ public class ChatClient implements Runnable {
         msgArr.add(message);
     }
 
-
-    //channel
-    public void initConnection() {
+    public void initConn(){
         String target = "192.168.8.104:50052";
         if (channel == null) {
             synchronized (new Object()) {
                 if (channel == null) {
-                    this.channel =  ManagedChannelBuilder.forTarget(target).usePlaintext().build();
-                    this.chatStub = ChatServiceGrpc.newStub(channel);
+                    this.channel = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
 
+                }
+            }
+        }
+    }
+
+
+    //channel
+    public void initConnection() {
+        initConn();
+        if(chatStub == null){
+            synchronized (new Object()) {
+
+                    this.chatStub = ChatServiceGrpc.newStub(channel);
                     Metadata headers = new Metadata();
                     Metadata.Key<String> metaKey = Metadata.Key.of("fromuser", Metadata.ASCII_STRING_MARSHALLER);
-                    if(ChatStore.getEmail() != (null)) {
+                    if (ChatStore.getEmail() != (null)) {
                         headers.put(metaKey, ChatStore.getEmail());
                         chatStub = MetadataUtils.attachHeaders(chatStub, headers);
                     }
-                }
             }
         }
 
@@ -243,6 +254,17 @@ public class ChatClient implements Runnable {
 //        }
     }
 
+    public void processGroupMsg(String friend, String msg,String groupName){
+        initConnection();
+        if (updateStub == null) {
+            this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
+            System.out.println("UpdateStub");
+        }
+        GroupMessage groupMessage = GroupMessage.newBuilder().setGroupDetails(MakeGroup.newBuilder().setGroupName(groupName).build()).setFriendEmail(friend).setMsg(msg).build();
+        reqObserverGrp.onNext(groupMessage);
+
+    }
+
     public void processMsg(String touser,String msg) throws BadPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException {
         initConnection();
         if (updateStub == null) {
@@ -286,7 +308,7 @@ public class ChatClient implements Runnable {
 
     //pass register details to server
     public  void register(String email,String password,String pblcKey,String username){
-        initConnection();
+        initConn();
         if (authStub == null) {
             this.authStub = AuthenticateUserGrpc.newBlockingStub(channel);
         }
@@ -303,9 +325,9 @@ public class ChatClient implements Runnable {
     //login
     public boolean login(String email, String password){
         initConnection();
-        if (authStub == null) {
+//        if (authStub == null) {
             this.authStub = AuthenticateUserGrpc.newBlockingStub(channel);
-        }
+//        }
 //        String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes());
 //        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
 
@@ -412,6 +434,40 @@ public class ChatClient implements Runnable {
         System.out.println("update name");
 
     }
+
+    //Create a group
+    public String createGroup(String groupName, String adminEmail,String friendEmail){
+        initConnection();
+
+        if(updateStub == null){
+            this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
+            System.out.println("createGroup - chatstub - null");
+        }
+        System.out.println("createGroup - chatstub");
+//        String myemail = ChatStore.getEmail();
+//        MakeGroup makeGroup2 = MakeGroup.newBuilder()./
+        System.out.println(ChatStore.getEmail());
+        System.out.println(groupName);
+//        String frndEmails = friendEmail
+        MakeGroup makeGroup = MakeGroup.newBuilder().setGroupName(groupName).setAdminEmail(adminEmail).setFriendEmail(friendEmail).build();
+        MakeGroup response = updateStub.createGroup(makeGroup);
+        System.out.println(response);
+        grpArr.add(response.getGroupName());
+        String grpname = response.getGroupName();
+        ChatStore.setGroupList(grpArr);
+        System.out.println(grpname);
+        return grpname;
+    }
+
+
+
+//    public String updateGrpFriendList(String email){
+//        initConnection();
+//        if(chatStub == null){
+//            this.chatStub = ChatServiceGrpc.newStub(channel);
+//        }
+//        return "a";
+//    }
 
     //add new friend
     public String updateFriendList(String emailf) throws NoSuchAlgorithmException {
@@ -601,59 +657,6 @@ public class ChatClient implements Runnable {
 
 //        return String.valueOf(Base64.getDecoder().decode(cipherText));
     }
-
-
-
-
-
-
-
-
-
-//    public static KeyPair generateKeyPair() throws Exception {
-//        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-//        generator.initialize(2048, new SecureRandom());
-//        KeyPair pair = generator.generateKeyPair();
-//
-//        return pair;
-//    }
-
-//    //First generate a public/private key pair
-//    KeyPair pair = generateKeyPair();
-//
-//    //Our secret message
-//    String message = "the answer to life the universe and everything";
-//
-//    //Encrypt the message
-//    String cipherText = encryption(message, pair.getPublic());
-//
-//    //Now decrypt it
-//    String decipheredMessage = decryption(cipherText, pair.getPrivate());
-//
-//System.out.println(decipheredMessage);
-
-//encrypt
-//    public static String encryption(String plainText, PublicKey publicKey) throws Exception {
-//        Cipher encryptCipher = Cipher.getInstance("RSA");
-//        encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
-//
-//        byte[] cipherText = encryptCipher.doFinal(plainText.getBytes());
-//
-//        return Base64.getEncoder().encodeToString(cipherText);
-//    }
-//
-//
-//    //decrypt
-//    public static String decryption(String cipherText, PrivateKey privateKey) throws Exception {
-//        byte[] bytes = Base64.getDecoder().decode(cipherText);
-//
-//        Cipher decriptCipher = Cipher.getInstance("RSA");
-//        decriptCipher.init(Cipher.DECRYPT_MODE, privateKey);
-//
-//        return new String(decriptCipher.doFinal(bytes));
-//    }
-
-
 
 
 
