@@ -20,6 +20,7 @@ import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.messageutil.ChatClient;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class groupChat extends AppCompatActivity {
 
@@ -45,6 +46,7 @@ public class groupChat extends AppCompatActivity {
         addFriendsToGroup();
         image();
         FriendName();
+        grpSendMessage();
     }
 
     //button for add friends
@@ -53,6 +55,7 @@ public class groupChat extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("Name");
         String email = intent.getStringExtra("email");
+        String grpID = intent.getStringExtra("uuid");
 
 
         addFriends.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +75,10 @@ public class groupChat extends AppCompatActivity {
                         m_Text = input.getText().toString();
 //                        String name = null;
 //                        name = m_Text;
+
                         System.out.println(m_Text);
-                        String groupName = ChatClient.getInstance().createGroup(name,email, m_Text);
+                       
+                        String groupName = ChatClient.getInstance().createGroup(grpID,name,email,m_Text);
 
                         if(name.equals(null)){
                             System.out.println("Friend is not available in frindlistClass");
@@ -110,7 +115,7 @@ public class groupChat extends AppCompatActivity {
     private  void FriendName(){
         username = findViewById(R.id.userName);
         Intent intent = getIntent();
-//
+
         String name = intent.getStringExtra("Name");
         String email = intent.getStringExtra("email");
         username.setText(name);
@@ -120,11 +125,16 @@ public class groupChat extends AppCompatActivity {
     public void grpSendMessage(){
         textSend = findViewById(R.id.textSend);
         sendComment = findViewById(R.id.sendComment);
+        Intent intent = getIntent();
+
+        String name = intent.getStringExtra("Name");
+        String email = intent.getStringExtra("email");
+
 
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ChatClient.getInstance().processGroupMsg(email,textSend.getText().toString(),name);
             }
         });
     }

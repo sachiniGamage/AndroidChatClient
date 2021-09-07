@@ -3,6 +3,7 @@ package com.example.chatclient.messageutil;
 import com.example.chatclient.chat;
 import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.stub.*;
+import com.google.protobuf.StringValue;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -57,7 +58,9 @@ public class ChatClient implements Runnable {
     private StreamObserver<GroupMessage> reqObserverGrp;
     private Queue<String> msgQueue = new LinkedBlockingQueue<>();
     private ArrayList<String> msgArr = new ArrayList<String>();
+    private ArrayList<String> grpmsgArr = new ArrayList<String>();
     private List<String> msgList = new ArrayList<>();
+    private List<String> grpMsgList = new ArrayList<>();
     private  ArrayList<String> friendArr = new ArrayList<String>();
     private ArrayList<String> grpArr = new ArrayList<String>();
 //    private  ArrayList<String> chatFrnds = new ArrayList<String>();
@@ -132,6 +135,26 @@ public class ChatClient implements Runnable {
         }
 
         System.out.println("Connection established.");
+    }
+
+    public void watchGrpMsg() {
+        reqObserverGrp = chatStub.groupChat(new StreamObserver<GroupMessageFromServer>() {
+            @Override
+            public void onNext(GroupMessageFromServer value) {
+                System.out.println("recieved message " + value.getTimestamp());
+//                getGrpMsgList().add(v
+            }
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("completed");
+            }
+
+        });
     }
 
     //check whether the messages are received to the server side
@@ -254,6 +277,7 @@ public class ChatClient implements Runnable {
 //        }
     }
 
+
     public void processGroupMsg(String friend, String msg,String groupName){
         initConnection();
         if (updateStub == null) {
@@ -262,7 +286,7 @@ public class ChatClient implements Runnable {
         }
         GroupMessage groupMessage = GroupMessage.newBuilder().setGroupDetails(MakeGroup.newBuilder().setGroupName(groupName).build()).setFriendEmail(friend).setMsg(msg).build();
         reqObserverGrp.onNext(groupMessage);
-
+        System.out.println(grpmsgArr.add(groupMessage.toString()));
     }
 
     public void processMsg(String touser,String msg) throws BadPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException {
@@ -298,6 +322,10 @@ public class ChatClient implements Runnable {
 
     public List<String> getMsgList() {
         return msgList;
+    }
+
+    public List<String> getGrpMsgList(){
+        return grpMsgList;
     }
 
 
@@ -369,6 +397,19 @@ public class ChatClient implements Runnable {
         }
     }
 
+    private void getGroupList(StringValue myEmail){
+        initConnection();
+        if (updateStub == null) {
+            this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
+            System.out.println("UpdateStub");
+        }
+//        ViewGroup groupRequest = ViewGroup.newBuilder().addGrpDetails(MakeGroup.newBuilder().setFriendEmail(myEmail).build()).build();
+        ViewGroup response = updateStub.getGroup(myEmail);
+        ArrayList arrayList = new ArrayList();
+
+
+        }
+
     // mage email address ekata adaala friendsla
     private void getFriendlist(String email){
         initConnection();
@@ -436,7 +477,7 @@ public class ChatClient implements Runnable {
     }
 
     //Create a group
-    public String createGroup(String groupName, String adminEmail,String friendEmail){
+    public String createGroup(String groupId, String groupName, String adminEmail,String friendEmail){
         initConnection();
 
         if(updateStub == null){
@@ -449,7 +490,7 @@ public class ChatClient implements Runnable {
         System.out.println(ChatStore.getEmail());
         System.out.println(groupName);
 //        String frndEmails = friendEmail
-        MakeGroup makeGroup = MakeGroup.newBuilder().setGroupName(groupName).setAdminEmail(adminEmail).setFriendEmail(friendEmail).build();
+        MakeGroup makeGroup = MakeGroup.newBuilder().setGroupId(groupId).setGroupName(groupName).setAdminEmail(adminEmail).setFriendEmail(friendEmail).build();
         MakeGroup response = updateStub.createGroup(makeGroup);
         System.out.println(response);
         grpArr.add(response.getGroupName());

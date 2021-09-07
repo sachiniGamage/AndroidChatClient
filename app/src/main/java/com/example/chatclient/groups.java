@@ -18,6 +18,7 @@ import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.messageutil.ChatClient;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class groups extends AppCompatActivity {
 
@@ -70,6 +71,9 @@ public class groups extends AppCompatActivity {
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        String randomString = UUID.randomUUID().toString();
+
                         m_Text = input.getText().toString();
                         System.out.println(m_Text);
                         String groupName = m_Text;
@@ -94,7 +98,7 @@ public class groups extends AppCompatActivity {
 //                                  String name=  usersList.getSelectedItem().toString();
                                     String name= usersList.getItemAtPosition(position).toString();
 
-                                    startActivity(new Intent(groups.this,groupChat.class).putExtra("Name",name).putExtra("email",ChatStore.getEmail()));
+                                    startActivity(new Intent(groups.this,groupChat.class).putExtra("Name",name).putExtra("email",ChatStore.getEmail()).putExtra("uuid",randomString));
                                 }
                             });
                         }

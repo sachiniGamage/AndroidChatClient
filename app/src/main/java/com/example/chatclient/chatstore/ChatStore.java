@@ -18,6 +18,7 @@ public class ChatStore {
     static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     static Map<String, String> emailSymmetricKeyMap = new HashMap<String, String>();
     static Map<String, String> friendEmailDecryptedKeyMap = new HashMap<String, String>();
+//    static Map<>
     static String email;
     static String username;
     static String token;

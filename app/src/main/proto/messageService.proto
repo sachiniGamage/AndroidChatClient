@@ -3,6 +3,7 @@ syntax = "proto3";
 package service;
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
 
 option java_multiple_files = true;
 option java_package = "com.example.chatclient.stub";
@@ -80,10 +81,14 @@ message ViewFriends{
 }
 
 message MakeGroup{
-    int32 groupId = 1;
+    string groupId = 1;
     string groupName = 2;
     string adminEmail =3;
     string friendEmail =4;
+}
+
+message ViewGroup{
+    repeated MakeGroup grpDetails = 1;
 }
 
 message AddGrpFriendReq{
@@ -120,6 +125,7 @@ service UpdateUser{
     rpc AddFriend(AddFriendReq) returns(AddFriendReq);
     rpc GetFriends(ViewFriends) returns(ViewFriends);
     rpc AddFriendsToGroup(AddGrpFriendReq) returns(AddGrpFriendReq);
+    rpc GetGroup(google.protobuf.StringValue) returns(ViewGroup);
     rpc CreateGroup(MakeGroup) returns (MakeGroup);
     rpc AddFriendUpdate(AddFriendReq) returns(AddFriendReq);
 }
