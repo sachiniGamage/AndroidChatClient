@@ -77,7 +77,7 @@ public class groupChat extends AppCompatActivity {
 //                        name = m_Text;
 
                         System.out.println(m_Text);
-                       
+
                         String groupName = ChatClient.getInstance().createGroup(grpID,name,email,m_Text);
 
                         if(name.equals(null)){

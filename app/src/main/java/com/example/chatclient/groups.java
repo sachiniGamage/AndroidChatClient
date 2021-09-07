@@ -42,6 +42,11 @@ public class groups extends AppCompatActivity {
         addFriends = (ImageView)findViewById(R.id.addGrp);
         btnAdd = (ImageView)findViewById(R.id.btnAdd);
         usersList = findViewById(R.id.usersList);
+
+//        Intent intent = getIntent();
+//        String name = intent.getStringExtra("Name");
+//        ChatClient.getInstance().getGroupList(ChatStore.getEmail());
+
 //        if(arrayStrings != null) {
 //
 //        arrayStrings.add("a");

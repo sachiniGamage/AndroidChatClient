@@ -390,23 +390,27 @@ public class ChatClient implements Runnable {
             System.out.println("login successful");
             //mage email address ekata adaala friendsla
             getFriendlist(email);
-
+            getGroupList(email);
 
 
             return true;
         }
     }
 
-    private void getGroupList(StringValue myEmail){
+    public void getGroupList(String myEmail){
         initConnection();
         if (updateStub == null) {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
             System.out.println("UpdateStub");
         }
-//        ViewGroup groupRequest = ViewGroup.newBuilder().addGrpDetails(MakeGroup.newBuilder().setFriendEmail(myEmail).build()).build();
-        ViewGroup response = updateStub.getGroup(myEmail);
+//        ViewGroup groupRequest = ViewGroup.newBuilder().build();
+        ViewGroup response = updateStub.getGroup(StringValue.of(myEmail));
+        System.out.println("group list - get");
+        System.out.println(response.getGrpDetailsList());
         ArrayList arrayList = new ArrayList();
-
+//        for(MakeGroup makeGroup : response.getGrpDetails()){
+//
+//        }
 
         }
 
