@@ -408,9 +408,11 @@ public class ChatClient implements Runnable {
         System.out.println("group list - get");
         System.out.println(response.getGrpDetailsList());
         ArrayList arrayList = new ArrayList();
-//        for(MakeGroup makeGroup : response.getGrpDetails()){
-//
-//        }
+        for(MakeGroup makeGroup : response.getGrpDetailsList()){
+            arrayList.add(makeGroup.getGroupName());
+            ChatStore.addGrpIdGrpNameToMap(makeGroup.getGroupId(), makeGroup.getGroupName());
+        }
+        ChatStore.setGroupList(arrayList);
 
         }
 

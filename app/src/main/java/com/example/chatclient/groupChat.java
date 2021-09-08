@@ -80,6 +80,8 @@ public class groupChat extends AppCompatActivity {
 
                         String groupName = ChatClient.getInstance().createGroup(grpID,name,email,m_Text);
 
+
+
                         if(name.equals(null)){
                             System.out.println("Friend is not available in frindlistClass");
                             startActivity(new Intent(groupChat.this,groupChat.class));

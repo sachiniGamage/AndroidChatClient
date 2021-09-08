@@ -27,6 +27,7 @@ public class groups extends AppCompatActivity {
     private String m_Text ;
     private ListView usersList;
     protected ArrayList<String> arrayStrings = new ArrayList<String>();
+    protected ArrayList<String> grpArrayStrings = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,16 @@ public class groups extends AppCompatActivity {
         addFriends = (ImageView)findViewById(R.id.addGrp);
         btnAdd = (ImageView)findViewById(R.id.btnAdd);
         usersList = findViewById(R.id.usersList);
+        String randomString = UUID.randomUUID().toString();
+        ChatStore.getGroupList();
+        grpArrayStrings = ChatStore.getGroupList();
+
+        ArrayAdapter<String> itemsAdapter =
+                    new ArrayAdapter<String>(groups.this, android.R.layout.simple_list_item_1, grpArrayStrings);
+            usersList = (ListView) findViewById(R.id.usersList);
+            usersList.setAdapter(itemsAdapter);
+        
+
 
 //        Intent intent = getIntent();
 //        String name = intent.getStringExtra("Name");
@@ -54,11 +65,7 @@ public class groups extends AppCompatActivity {
 //
 //            arrayStrings = ChatStore.getGroupList();
 //
-//            ArrayAdapter<String> itemsAdapter =
-//                    new ArrayAdapter<String>(groups.this, android.R.layout.simple_list_item_1, arrayStrings);
-////            usersList = (ListView) findViewById(R.id.usersList);
-//            usersList.setAdapter(itemsAdapter);
-//        }
+//
 
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +84,7 @@ public class groups extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String randomString = UUID.randomUUID().toString();
+
 
                         m_Text = input.getText().toString();
                         System.out.println(m_Text);
@@ -86,11 +93,14 @@ public class groups extends AppCompatActivity {
                         System.out.println("groupName: " + groupName);
 //                        groupName = m_Text;
 
+                        ChatStore.addGrpIdGrpNameToMap(randomString,groupName);
+                        arrayStrings.add(groupName);
+
                         if(groupName.equals("")){
                             startActivity(new Intent(groups.this,groups.class));
                         }else{
 
-                            arrayStrings.add(groupName);
+
 //                            ChatStore.setGroupList(arrayStrings);
                             ArrayAdapter<String> itemsAdapter1 =
                                     new ArrayAdapter<String>(groups.this, android.R.layout.simple_list_item_1,arrayStrings);
@@ -116,20 +126,19 @@ public class groups extends AppCompatActivity {
                     }
                 });
 
-
                 builder.show();
                 }
         });
 
-//        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////               String name=  usersList.getSelectedItem().toString();
-//                String name= usersList.getItemAtPosition(position).toString();
-//
-//                startActivity(new Intent(groups.this,groupChat.class).putExtra("Name",name).putExtra("email", ChatStore.getEmail()));
-//            }
-//        });
+        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//               String name=  usersList.getSelectedItem().toString();
+                String name= usersList.getItemAtPosition(position).toString();
+
+                startActivity(new Intent(groups.this,groupChat.class).putExtra("Name",name).putExtra("email", ChatStore.getEmail()).putExtra("uuid",randomString));
+            }
+        });
     }
     //app logo
     private void image(){

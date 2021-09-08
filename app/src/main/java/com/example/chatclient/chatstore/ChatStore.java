@@ -2,6 +2,8 @@ package com.example.chatclient.chatstore;
 
 import android.content.Context;
 
+import com.google.protobuf.StringValue;
+
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class ChatStore {
     static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     static Map<String, String> emailSymmetricKeyMap = new HashMap<String, String>();
     static Map<String, String> friendEmailDecryptedKeyMap = new HashMap<String, String>();
-//    static Map<>
+    static Map<String, String> grpIDAndGroupNameMap = new HashMap<String, String>();
     static String email;
     static String username;
     static String token;
@@ -27,6 +29,14 @@ public class ChatStore {
     static Context c;
 
     public ChatStore() {
+    }
+
+    public static void addGrpIdGrpNameToMap(String grpId, String grpName){
+        grpIDAndGroupNameMap.put(grpId,grpName);
+    }
+
+    public static String getGrpNameFromGrpIdToMap(String grpId){
+        return grpIDAndGroupNameMap.get(grpId);
     }
 
     public static PublicKey getPublicKey() {
