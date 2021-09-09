@@ -39,6 +39,10 @@ public class ChatStore {
         return grpIDAndGroupNameMap.get(grpId);
     }
 
+    public static Map<String, String> getGrpIDAndGroupNameMap() {
+        return grpIDAndGroupNameMap;
+    }
+
     public static PublicKey getPublicKey() {
         return publicKey;
     }

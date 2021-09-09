@@ -2,6 +2,7 @@ package com.example.chatclient.messageutil;
 
 import com.example.chatclient.chat;
 import com.example.chatclient.chatstore.ChatStore;
+import com.example.chatclient.groupChat;
 import com.example.chatclient.stub.*;
 import com.google.protobuf.StringValue;
 
@@ -69,6 +70,7 @@ public class ChatClient implements Runnable {
     private Map<String,ArrayList<String>> chatFrndsMap = new HashMap<String, ArrayList<String>>();
     String currentChatFriendName,currentToEmail;
     chat chatUI;
+    groupChat grpChatUI;
 //    static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
     private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
     private final static int CRYPTO_BITS = 2048;
@@ -80,6 +82,7 @@ public class ChatClient implements Runnable {
     public void run() {
         initConnection();
         watchMessages();
+        watchGrpMsg();
 
 
     }
@@ -141,8 +144,12 @@ public class ChatClient implements Runnable {
         reqObserverGrp = chatStub.groupChat(new StreamObserver<GroupMessageFromServer>() {
             @Override
             public void onNext(GroupMessageFromServer value) {
-                System.out.println("recieved message " + value.getTimestamp());
-//                getGrpMsgList().add(v
+                System.out.println("recieved message " + value.getTimestamp() +"msg : "+ value.getGroupList().getMsg() + value.getGroupList().getFriendEmail());
+                getGrpMsgList().add(value.getGroupList().getMsg());
+                String msg = value.getGroupList().getMsg();
+                String friend = value.getGroupList().getFriendEmail();
+
+                grpChatUI.displayToMsg(msg);
             }
             @Override
             public void onError(Throwable t) {
@@ -278,13 +285,13 @@ public class ChatClient implements Runnable {
     }
 
 
-    public void processGroupMsg(String friend, String msg,String groupName){
+    public void processGroupMsg(String friendemail, String groupId,String message){
         initConnection();
         if (updateStub == null) {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
             System.out.println("UpdateStub");
         }
-        GroupMessage groupMessage = GroupMessage.newBuilder().setGroupDetails(MakeGroup.newBuilder().setGroupName(groupName).build()).setFriendEmail(friend).setMsg(msg).build();
+        GroupMessage groupMessage = GroupMessage.newBuilder().setGroupDetails(MakeGroup.newBuilder().setFriendEmail(friendemail).setGroupId(groupId)).setMsg(message).build();
         reqObserverGrp.onNext(groupMessage);
         System.out.println(grpmsgArr.add(groupMessage.toString()));
     }

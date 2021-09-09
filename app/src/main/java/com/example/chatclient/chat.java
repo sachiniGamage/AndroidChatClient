@@ -51,7 +51,7 @@ public class chat extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        new Thread(ChatClient.getInstance()).start();
+//        new Thread(ChatClient.getInstance()).start();
 
 
         Intent intent = getIntent();
