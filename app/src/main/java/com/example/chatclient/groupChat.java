@@ -22,7 +22,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.chatclient.chatstore.ChatStore;
+import com.example.chatclient.chatstore.GroupIDObject;
+import com.example.chatclient.chatstore.GroupMsgObj;
 import com.example.chatclient.messageutil.ChatClient;
+import com.example.chatclient.stub.GroupMessage;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -48,11 +51,28 @@ public class groupChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
 //        new Thread(ChatClient.getInstance()).start();
-
+        Intent intent = getIntent();
         addFriendsToGroup();
         image();
         FriendName();
         grpSendMessage();
+
+        ArrayList<GroupMsgObj> grpMsgArr = ChatClient.getInstance().getGrpIdMsgsMap().get(intent.getStringExtra("uuid"));
+
+        if(grpMsgArr != null) {
+            for (int i = 0; i < grpMsgArr.size(); i++) {
+                GroupMsgObj msgobj = grpMsgArr.get(i);
+                System.out.println("email " +intent.getStringExtra("email"));
+                if(msgobj.getFriendemail().equals(intent.getStringExtra("email"))){
+
+                    this.displayToMsg(grpMsgArr.get(i).getMsg());
+                }else{
+                    this.displayGrpMsg(grpMsgArr.get(i).getMsg());
+                }
+            }
+        }
+
+        ChatClient.getInstance().addGrpChat(intent.getStringExtra("uuid"),this);
     }
 
     //button for add friends

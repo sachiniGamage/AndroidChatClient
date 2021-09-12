@@ -2,24 +2,19 @@ package com.example.chatclient.messageutil;
 
 import com.example.chatclient.chat;
 import com.example.chatclient.chatstore.ChatStore;
+import com.example.chatclient.chatstore.GroupMsgObj;
 import com.example.chatclient.groupChat;
 import com.example.chatclient.stub.*;
 import com.google.protobuf.StringValue;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyFactory;
-import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -27,8 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
@@ -67,8 +60,21 @@ public class ChatClient implements Runnable {
 //    private  ArrayList<String> chatFrnds = new ArrayList<String>();
     private ArrayList<String> recievedMsgArr = new ArrayList<>();
     private Map<String,chat> ChatObserver = new HashMap<String, chat>();
+
+    public Map<String, ArrayList<String>> getChatFrndsMap() {
+        return chatFrndsMap;
+    }
+
+    public Map<String, ArrayList<GroupMsgObj>> getGrpIdMsgsMap() {
+        return GrpIdMsgsMap;
+    }
+
+
+
     private Map<String,ArrayList<String>> chatFrndsMap = new HashMap<String, ArrayList<String>>();
-    String currentChatFriendName,currentToEmail;
+    private Map<String, ArrayList<GroupMsgObj>> GrpIdMsgsMap = new HashMap<String, ArrayList<GroupMsgObj>>();
+
+    String currentChatFriendName,currentToEmail, grpID;
     chat chatUI;
     groupChat grpChatUI;
 //    static Map<String, String> emailFriendNameMap = new HashMap<String, String>();
@@ -144,12 +150,35 @@ public class ChatClient implements Runnable {
         reqObserverGrp = chatStub.groupChat(new StreamObserver<GroupMessageFromServer>() {
             @Override
             public void onNext(GroupMessageFromServer value) {
-                System.out.println("recieved message " + value.getTimestamp() +"msg : "+ value.getGroupList().getMsg() + value.getGroupList().getFriendEmail());
+                System.out.println("recieved message " + value.getTimestamp() + "msg : " + value.getGroupList().getMsg() + value.getGroupList().getFriendEmail());
                 getGrpMsgList().add(value.getGroupList().getMsg());
                 String msg = value.getGroupList().getMsg();
-                String friend = value.getGroupList().getFriendEmail();
+                String id = value.getGroupList().getGroupDetails().getGroupId();
+                String friend = value.getGroupList().getGroupDetails().getFriendEmail();
 
-                grpChatUI.displayToMsg(msg);
+                    if (GrpIdMsgsMap.get(id)== null) {
+                        GrpIdMsgsMap.put(id, new ArrayList<GroupMsgObj>());
+                    }
+
+                    try {
+                        System.out.println("display chat3");
+                        GroupMsgObj obj = new GroupMsgObj(msg,friend);
+                        GrpIdMsgsMap.get(id).add(obj);
+                        if (grpChatUI != null) {
+                            if (friend.equals(ChatStore.getEmail())) {
+                                grpChatUI.displayToMsg(msg);
+                                System.out.println("displayToMsg");
+                            } else {
+                                System.out.println("displayGrpMsg");
+                                grpChatUI.displayGrpMsg(msg);
+
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
             }
             @Override
             public void onError(Throwable t) {
@@ -187,10 +216,10 @@ public class ChatClient implements Runnable {
 
                     String currentFriendEmail = ChatStore.getFriendEmailFromNameToMap(currentChatFriendName);
 
-                    if(currentFriendEmail.equals(from) ) {
+                    if(from.equals(currentFriendEmail) ) {
                         System.out.println("display chat5");
                         chatUI.DisplayChatMsgs(msg);
-                    }else if(currentFriendEmail.equals(to)){
+                    }else if(to.equals(currentFriendEmail)){
                         System.out.println("messages equal to :" + msg);
                         chatUI.displayToMsg(msg);
                     }
@@ -246,6 +275,11 @@ public class ChatClient implements Runnable {
         this.currentChatFriendName = user;
     }
 
+    public void addGrpChat(String grpid, groupChat observer){
+        this.grpChatUI = observer;
+        this.grpID = grpid;
+    }
+
 
     //get messages from queue(peek value)
 //    public String getMsgFromQueue(){
@@ -291,6 +325,7 @@ public class ChatClient implements Runnable {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
             System.out.println("UpdateStub");
         }
+
         GroupMessage groupMessage = GroupMessage.newBuilder().setGroupDetails(MakeGroup.newBuilder().setFriendEmail(friendemail).setGroupId(groupId)).setMsg(message).build();
         reqObserverGrp.onNext(groupMessage);
         System.out.println(grpmsgArr.add(groupMessage.toString()));

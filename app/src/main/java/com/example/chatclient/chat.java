@@ -59,6 +59,18 @@ public class chat extends Activity {
         image();
         FriendName();
         System.out.println("display chat2");
+
+
+
+
+        ArrayList<String> MsgArr =  ChatClient.getInstance().getChatFrndsMap().get(intent.getStringExtra("Name"));
+
+        if(MsgArr != null) {
+            for (int i = 0; i < MsgArr.size(); i++) {
+
+                this.DisplayChatMsgs(MsgArr.get(i));
+            }
+        }
         ChatClient.getInstance().addChat(intent.getStringExtra("Name"),this);
     }
 
