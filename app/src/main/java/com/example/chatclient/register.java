@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chatclient.chatstore.ChatStore;
 import com.example.chatclient.chatstore.GenPrivateKey;
@@ -173,7 +174,7 @@ public class register extends AppCompatActivity {
                     System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
                     startActivity(new Intent(register.this, login.class));
 
-
+                    Toast.makeText(register.this,"Sign Up Successful !!!", Toast.LENGTH_SHORT).show();
 
                 }
             }

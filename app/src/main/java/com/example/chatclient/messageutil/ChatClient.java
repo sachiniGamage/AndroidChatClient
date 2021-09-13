@@ -210,7 +210,7 @@ public class ChatClient implements Runnable {
                 }
 
                 try {
-                    String msg = givenPassword_whenDecrpt_thenSuccess(msgs);
+                    String msg = givenPassword_whenDecrpt_thenSuccess(msgs, "baeldung", "12345678");
                     System.out.println("display chat3");
                     chatFrndsMap.get(from).add(msg);
 
@@ -342,7 +342,7 @@ public class ChatClient implements Runnable {
         String messages = msg;
 
 
-        String msgs = givenPassword_whenEncrypt_thenSuccess(msg);
+        String msgs = givenPassword_whenEncrypt_thenSuccess(msg,"baeldung","12345678");
         System.out.println("msg encrpt");
 
 //        encrypt(messages,ChatStore.getSymmetricKeyFromEmailToMap(touser));
@@ -635,14 +635,14 @@ public class ChatClient implements Runnable {
 //        }
     }
 
-    String givenPassword_whenDecrpt_thenSuccess(String msg)
+    String givenPassword_whenDecrpt_thenSuccess(String msg, String password, String salt)
             throws InvalidKeySpecException, NoSuchAlgorithmException,
             IllegalBlockSizeException, InvalidKeyException, BadPaddingException,
             InvalidAlgorithmParameterException, NoSuchPaddingException {
 
         String cipherText = msg;
-        String password ="baeldung";
-        String salt = "12345678";
+//        String password ="baeldung";
+//        String salt = "12345678";
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
         SecretKey key = AESUtil.getKeyFromPassword(password,salt);
         String decryptedCipherText = AESUtil.decryptPasswordBased(
@@ -655,14 +655,14 @@ public class ChatClient implements Runnable {
 //        Assertions.assertEquals(plainText, decryptedCipherText);
     }
 
-    String givenPassword_whenEncrypt_thenSuccess(String msg)
+    String givenPassword_whenEncrypt_thenSuccess(String msg, String password, String salt)
             throws InvalidKeySpecException, NoSuchAlgorithmException,
             IllegalBlockSizeException, InvalidKeyException, BadPaddingException,
             InvalidAlgorithmParameterException, NoSuchPaddingException {
 
         String plainText = msg;
-        String password = "baeldung";
-        String salt = "12345678";
+//        String password = "baeldung";
+//        String salt = "12345678";
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
         SecretKey key = AESUtil.getKeyFromPassword(password,salt);
         String cipherText = AESUtil.encryptPasswordBased(plainText, key, ivParameterSpec);
