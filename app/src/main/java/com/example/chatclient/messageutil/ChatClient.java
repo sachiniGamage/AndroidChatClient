@@ -115,7 +115,7 @@ public class ChatClient implements Runnable {
     }
 
     public void initConn(){
-        String target = "192.168.8.104:50052";
+        String target = "35.244.15.151:50052";
         if (channel == null) {
             synchronized (new Object()) {
                 if (channel == null) {
