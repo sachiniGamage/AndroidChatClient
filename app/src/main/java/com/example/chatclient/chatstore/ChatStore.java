@@ -11,10 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChatStore {
-    // static friendlist // TODO: Later
-    // static email
-    // static token
-    // static username
     static ArrayList<String> friendList ;
     static ArrayList<String> groupList;
     static Map<String, String> emailFriendNameMap = new HashMap<String, String>();

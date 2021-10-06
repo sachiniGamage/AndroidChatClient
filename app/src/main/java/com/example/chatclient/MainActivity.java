@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //login
     private void signin(){
         btn_signin = findViewById(R.id.btn_signIn);
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //register
     private void signup(){
         btn_signup = findViewById(R.id.btn_signup);
 

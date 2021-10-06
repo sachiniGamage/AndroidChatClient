@@ -41,16 +41,10 @@ public class groupChat extends AppCompatActivity {
     private ListView usersList;
     protected ArrayList<String> arrayStrings = new ArrayList<String>();
 
-//    Intent intent = getIntent();
-
-//    String name = intent.getStringExtra("Name");
-//    String email = intent.getStringExtra("email");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
-//        new Thread(ChatClient.getInstance()).start();
         Intent intent = getIntent();
         addFriendsToGroup();
         image();
@@ -64,7 +58,6 @@ public class groupChat extends AppCompatActivity {
                 GroupMsgObj msgobj = grpMsgArr.get(i);
                 System.out.println("email " +intent.getStringExtra("email"));
                 if(msgobj.getFriendemail().equals(intent.getStringExtra("email"))){
-
                     this.displayToMsg(grpMsgArr.get(i).getMsg());
                 }else{
                     this.displayGrpMsg(grpMsgArr.get(i).getMsg());
@@ -93,14 +86,11 @@ public class groupChat extends AppCompatActivity {
                 // type of input
                 input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 builder.setView(input);
-
+                //add button
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text = input.getText().toString();
-//                        String name = null;
-//                        name = m_Text;
-
                         System.out.println(m_Text);
 
                         String groupName = ChatClient.getInstance().createGroup(grpID,name,email,m_Text);
@@ -124,7 +114,7 @@ public class groupChat extends AppCompatActivity {
         });
     }
 
-    //app logo
+    //app logo - go to groups
     private void image(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
 
@@ -144,9 +134,9 @@ public class groupChat extends AppCompatActivity {
         String name = intent.getStringExtra("Name");
         String email = intent.getStringExtra("email");
         username.setText(name);
-//        ChatClient.getInstance().processMsg(name);
     }
 
+    //send messages - group chat
     public void grpSendMessage(){
         textSend = findViewById(R.id.textSend);
         sendComment = findViewById(R.id.sendComment);
@@ -155,9 +145,7 @@ public class groupChat extends AppCompatActivity {
         String name = intent.getStringExtra("Name");
         String email = intent.getStringExtra("email");
         String uuid = intent.getStringExtra("uuid");
-//        displayChat.setMovementMethod(new ScrollingMovementMethod());
-
-
+        //send button
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +154,7 @@ public class groupChat extends AppCompatActivity {
             }
         });
     }
+
 
     public void displayToMsg(String msg){
         Context currentContext = this;
@@ -185,7 +174,6 @@ public class groupChat extends AppCompatActivity {
                 linearLayout.addView(textView1);
 
                 System.out.println("display chat msg to");
-//                displayChat.setMovementMethod(new ScrollingMovementMethod());
             }
         });
     }

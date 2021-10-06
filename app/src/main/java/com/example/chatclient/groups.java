@@ -45,38 +45,18 @@ public class groups extends AppCompatActivity {
         addFriends = (ImageView)findViewById(R.id.addGrp);
         btnAdd = (ImageView)findViewById(R.id.btnAdd);
         usersList = findViewById(R.id.usersList);
-//        String randomString = UUID.randomUUID().toString();
         ChatStore.getGrpIDAndGroupNameMap();
         ChatStore.getGroupList();
 
-//        ArrayList<GroupIDObject> grpArray = new ArrayList<GroupIDObject>();
         for(Map.Entry<String, String> entry : ChatStore.getGrpIDAndGroupNameMap().entrySet()){
             GroupIDObject grpID = new GroupIDObject(entry.getKey(),entry.getValue());
             grpArrayStrings.add(grpID);
         }
 
-//        grpArrayStrings = ChatStore.getGroupList();
-
         ArrayAdapter<GroupIDObject> itemsAdapter =
                     new ArrayAdapter<GroupIDObject>(groups.this, android.R.layout.simple_list_item_1, grpArrayStrings);
             usersList = (ListView) findViewById(R.id.usersList);
             usersList.setAdapter(itemsAdapter);
-
-
-
-//        Intent intent = getIntent();
-//        String name = intent.getStringExtra("Name");
-//        ChatClient.getInstance().getGroupList(ChatStore.getEmail());
-
-//        if(arrayStrings != null) {
-//
-//        arrayStrings.add("a");
-//            System.out.println("arr" + arrayStrings);
-//
-//            arrayStrings = ChatStore.getGroupList();
-//
-//
-
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,32 +74,19 @@ public class groups extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-
                         String randomString = UUID.randomUUID().toString();
                         m_Text = input.getText().toString();
                         System.out.println(m_Text);
                         String groupName = m_Text;
-//                        String groupName = ChatClient.getInstance().createGroup(m_Text,ChatStore.getEmail());
                         System.out.println("groupName: " + groupName);
-//                        groupName = m_Text;
-
-//                        ArrayList<GroupIDObject> grpArr = new ArrayList<GroupIDObject>();
-//                        GroupIDObject object =
-
 
                         ChatStore.addGrpIdGrpNameToMap(randomString,groupName);
                         arrayStrings.add(groupName);
                         grpArrayStrings.add(new GroupIDObject(randomString,groupName));
 
-
-
-
                         if(groupName.equals("")){
                             startActivity(new Intent(groups.this,groups.class));
                         }else{
-
-
-//                            ChatStore.setGroupList(arrayStrings);
                             ArrayAdapter<GroupIDObject> itemsAdapter1 =
                                     new ArrayAdapter<GroupIDObject>(groups.this, android.R.layout.simple_list_item_1,grpArrayStrings);
                             usersList = (ListView) findViewById(R.id.usersList);
@@ -128,9 +95,7 @@ public class groups extends AppCompatActivity {
                             usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                  String name=  usersList.getSelectedItem().toString();
                                     String name= usersList.getItemAtPosition(position).toString();
-
                                     startActivity(new Intent(groups.this,groupChat.class).putExtra("Name",name).putExtra("email",ChatStore.getEmail()).putExtra("uuid",randomString));
                                 }
                             });
@@ -143,7 +108,6 @@ public class groups extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-
                 builder.show();
                 }
         });
@@ -151,14 +115,13 @@ public class groups extends AppCompatActivity {
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//               String name=  usersList.getSelectedItem().toString();
                 String name= usersList.getItemAtPosition(position).toString();
 
                 startActivity(new Intent(groups.this,groupChat.class).putExtra("Name",name).putExtra("email", ChatStore.getEmail()).putExtra("uuid", ((GroupIDObject)parent.getItemAtPosition(position)).getGrpID()));
             }
         });
     }
-    //app logo
+    //app logo - go to friend list
     private void image(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
 
@@ -170,5 +133,4 @@ public class groups extends AppCompatActivity {
             }
         });
     }
-
 }

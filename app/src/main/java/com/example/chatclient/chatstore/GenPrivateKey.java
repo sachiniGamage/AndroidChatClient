@@ -45,7 +45,7 @@ public class GenPrivateKey {
     private final static String CRYPTO_METHOD = "RSA";
     private final static int CRYPTO_BITS = 2048;
 
-
+// read files
     public static String read(Context context,String filename) throws IOException {
 
         File fileEvents = new File(context.getFilesDir(), filename);
@@ -64,26 +64,10 @@ public class GenPrivateKey {
         return result;
     }
 
+    //check private public keys exists or not
     public static void genKeyPairIfNotExist1(Context context) throws IOException, NoSuchAlgorithmException {
         String prvtkeyFile = "prvtKey1.txt";
         String pbKeyFile = "pbKey1.txt";
-
-//        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-//        generator.initialize(2048);
-//        KeyPair pair = generator.generateKeyPair();
-
-//        String privateKey = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCntGa4euy8Trv8CiHjlYqkvdKh0yO/+ujKscwreuRpzu8siTT+FwPisSPgKb/eRTB2JMyROr5pp2Iqf/yM0xYrWMXvCGeigAEydNG00Lp5nGJrGsTa1UCJx9/Bulftk3VdPlxL2PdIuNEG95uacGKxS3T8BV2V+vDHNe03jxsp+8E0rIiBMbDlcX00Ta1kkAWDH7NyTOQ+j65vKP+PhUcIhd53oPbYtusA78c19BElQEYs5bizGSr0eGA4GC8OqsgZdwboStfLai3rF3i+lA9MFiWP1WzA8hMJH/dyX3T/nljcXndVt35HZbWJoUjfUBLTLG/8bWytpY12xo76xMFbAgMBAAECggEAQoEKvxuYJ7C9YVyPRdX2jg/sqFm3cplImaDaS1/HlqIGPM4IYr6zvsDqbimAOd+MMT20ld8KxZEoH5xzhVDsGLJyg7D8j/ddAipLQv4HBNTcPob2C6XHmxvVAtknp0Hzp89kAHwAzCjmU3H7lcn9iTtYH9zs2N4Tf5xF/uNULVhPwGOebR3cEPTW5oDHOtK5vWrLO0I8tE5G/+mcMRspbYVQfWeTFLCUYDTh4rkdr3ANDdUI5FfmbwoWYoyAaSJCHU7agq8p1cX677VW/jczl+WMrFk2aQLJQEfnRvg5ZZ807rVlalGrsg8XTtzzaOiyj1yOseSSbBAboyWaJ7xAoQKBgQDuE46MydTzT0xOOSptIz+pKmCMzqIbcbCWx+NgUaCyOiIZvJ2ukKUNlUAPrH5j1HIZvYMqYvfnF6SkIIeSfoddUjItKLRao4lskHRZBnLwhvbFIVVFNGFIzsRHzN/5jJaO8+WbxYINnmCMa1P7XZNbYw76W00QO2vom6n2zWtx0QKBgQC0VJJRP8vXLfCLeN7QR9XTuKdsyvSX28j3L1QUzuLaKlrYD0MReMNliNS5Q7+6SvyGO1XDV+nrF5RBTTDvkMCYosskTNg8E0hiLu25LAQ4os//R2fiu4etAuEumUJJ1bR6pLVgd3bB5gP0jDMPDqARNA53fJbEy1Nx5c6Jmu3/awKBgDqDDfbmJ/NAmwVioV2/WwcNhjs1Ebxi/b6hE+35QeBrzzO6Gprrq9UhyGPRxiJs9ToETLdfKYRfWDSKVieX91blO7XDmkfoh37qJd43aopY8U9TuOxQSlSllLH81VM0zVAG+3iEW0lTknEQc8yEnBHKz8SSKeeCYywBDg29QNnxAoGATvWY+6qLfrTG1sseBOTvY70+0gwr/TJnVJSMpG/SNOTG0kQcgdH2/MZlHpnjoZaj68KfUuFzs1SnvdAm1T70leDyQfrD08o9r4AM5z+2uXXQzV5expCGX+Ma5mSE+f9w/yKPqKWmglBM+w9IbBdjTyUUEI2lFpZQ+1Y8kVQdUfECgYB9mat/hV9sje470k2yzpRQD7fOspaX8yOQnqVT/B0s94KtAy2t54QjoqOuYiFqP46wvIFb3U36ftt5DweRuFSrGXxIBuir3K0UIB5v6vPerWAyp0Nx/tLx7+GKzPkhVdbn7mC2EgKr3AFzISYaFMOSg6Obuh1sN99FDtrKOfu9iA==";
-//        String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp7RmuHrsvE67/Aoh45WKpL3SodMjv/royrHMK3rkac7vLIk0/hcD4rEj4Cm/3kUwdiTMkTq+aadiKn/8jNMWK1jF7whnooABMnTRtNC6eZxiaxrE2tVAicffwbpX7ZN1XT5cS9j3SLjRBvebmnBisUt0/AVdlfrwxzXtN48bKfvBNKyIgTGw5XF9NE2tZJAFgx+zckzkPo+ubyj/j4VHCIXed6D22LbrAO/HNfQRJUBGLOW4sxkq9HhgOBgvDqrIGXcG6ErXy2ot6xd4vpQPTBYlj9VswPITCR/3cl90/55Y3F53Vbd+R2W1iaFI31AS0yxv/G1sraWNdsaO+sTBWwIDAQAB";
-
-//        String privateKey = Base64.getEncoder().encodeToString(pair.getPrivate().getEncoded());
-//        String publicKey = Base64.getEncoder().encodeToString(pair.getPublic().getEncoded());
-
-//        System.out.println(privateKey);
-//
-//        System.out.println("\n");
-//        System.out.println(publicKey);
-//
-//        System.out.println("\n");
 
         String[] pvtPbKey = new String[2];
 
@@ -92,7 +76,6 @@ public class GenPrivateKey {
             String publicKey = read(context, pbKeyFile);
 
             ChatStore.setPublicKey(genPbkey(removeSuffix(publicKey,"\n")));
-//            ChatStore.setPublicKey(genPbkey(publicKey.trim()));
             ChatStore.setPrivateKey(genPvtkey(removeSuffix(privateKey,"\n")));
                     System.out.println("genPvtkey(privateKey)"+genPvtkey(privateKey));
                     pvtPbKey[0] = privateKey;
@@ -108,6 +91,7 @@ public class GenPrivateKey {
 
     }
 
+    // remove suffix
     public static String removeSuffix(final String s, final String suffix)
     {
         if (s != null && suffix != null && s.endsWith(suffix)) {
@@ -133,34 +117,16 @@ public class GenPrivateKey {
             write(context, prvtkeyFile, privatePublicKeyStrings[0]);
             write(context, pbKeyFile, privatePublicKeyStrings[1]);
         }
-
-
-//        read(context,filename);
-//        arr[0]  =   genPbkey().toString();
-//        arr[1]  =   genPvtkey().toString();
-//
-//        if(filename!=null){
-//            System.out.println("file");
-//        }else {
-//            System.out.println("no file");
-//            generateKeyPair();
-//            write(context, filename, arr);
-//        }
     }
 
 
 
+    //create new file
     public static void write( Context context,String filename,String content) throws IOException {
 
-//        File f = new File("path/to/dir/or/file");
         File file = new File(context.getFilesDir(), filename);
-//        if (!file.exists()) {
-////            file.createNewFile();
-//            file.mkdir();
-//        }
 
         try {
-//            File gpxfile = new File(filename, "sample.txt");
             FileWriter writer = new FileWriter(file);
 
             writer.append(content);
@@ -170,9 +136,7 @@ public class GenPrivateKey {
     }
 
 
-//    ------------------
-
-
+    //generate key pair
     public static String[] generateKeyPair() {
         String[] arr = new String[2];
         try{
@@ -197,7 +161,6 @@ public class GenPrivateKey {
 
 
     public static PublicKey genPbkey() {
-//        PublicKey pb = ChatStore.getPublicKey();
         byte[] decodedBytes1 = Base64.getDecoder().decode(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
         X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedBytes1);
         KeyFactory kf = null;
@@ -215,8 +178,8 @@ public class GenPrivateKey {
         return pb1;
     }
 
+    //generate public key
     public static PublicKey genPbkey(String publicKeyBase64Encoded) {
-//        PublicKey pb = ChatStore.getPublicKey();
         byte[] decodedBytes1 = Base64.getDecoder().decode(publicKeyBase64Encoded);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedBytes1);
         KeyFactory kf = null;
@@ -253,7 +216,7 @@ return pb1;
     }
 
 
-
+//generate private key
     public static PrivateKey genPvtkey(String privateKeyBase64Encoded) {
         byte[] decodedBytes1 = Base64.getDecoder().decode(privateKeyBase64Encoded.trim());
         PKCS8EncodedKeySpec spec1 = new PKCS8EncodedKeySpec(decodedBytes1);

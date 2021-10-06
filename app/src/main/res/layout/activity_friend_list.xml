@@ -7,15 +7,6 @@
     tools:context=".friendList"
     android:orientation="vertical">
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/toolbar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/teal_700"-->
-<!--        android:theme="@style/Base.CardView"-->
-<!--        app:popupTheme="@style/Widget.AppCompat.PopupMenu">-->
-<!--    </LinearLayout>-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +21,6 @@
             android:clickable="true"
             />
 
-
         <ImageView
             android:layout_width="70dp"
             android:layout_height="40dp"
@@ -40,49 +30,7 @@
             android:clickable="true"
             />
 
-
-<!--        <Button-->
-<!--            android:id="@+id/groupBtn"-->
-<!--            android:layout_width="98dp"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:layout_marginLeft="170dp"-->
-<!--            android:text="Group >" />-->
-
     </LinearLayout>
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        >-->
-
-<!--        <TableRow-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content">-->
-
-<!--        <Button-->
-<!--            android:id="@+id/Button9"-->
-<!--            android:layout_width="205dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="left"-->
-<!--            android:text="Chat"/>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/Button11"-->
-<!--            android:layout_width="205dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="right"-->
-<!--            android:text="People"/>-->
-<!--        </TableRow>-->
-
-<!--    </LinearLayout>-->
-
-
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="no_users_found"-->
-<!--        android:id="@+id/noUsersText"-->
-<!--        android:visibility="gone"/>-->
-
 
     <ListView
         android:layout_width="match_parent"
@@ -94,8 +42,5 @@
         android:layout_height="60dp"
         android:layout_marginLeft="330dp"
         android:src="@drawable/plus"/>
-
-
-
 
 </LinearLayout>

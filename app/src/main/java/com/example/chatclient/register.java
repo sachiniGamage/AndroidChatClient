@@ -65,18 +65,15 @@ public class register extends AppCompatActivity {
     }
 
     public void generateKeyPair() {
-
         try{
-        kpg = KeyPairGenerator.getInstance(CRYPTO_METHOD);
-        kpg.initialize(CRYPTO_BITS);
-        kp = kpg.genKeyPair();
-        publicKey = kp.getPublic();
-        privateKey = kp.getPrivate();
-
-    } catch (NoSuchAlgorithmException e) {
-        e.printStackTrace();
-    }
-
+            kpg = KeyPairGenerator.getInstance(CRYPTO_METHOD);
+            kpg.initialize(CRYPTO_BITS);
+            kp = kpg.genKeyPair();
+            publicKey = kp.getPublic();
+            privateKey = kp.getPrivate();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
     private void signup() {
@@ -87,6 +84,7 @@ public class register extends AppCompatActivity {
         name = findViewById(R.id.name);
 
         try {
+            //check public private keys generated or not
             GenPrivateKey.genKeyPairIfNotExist1(this);
             System.out.println(ChatStore.getPublicKey());
         } catch (IOException e) {
@@ -98,7 +96,6 @@ public class register extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 user = email.getText().toString();
                 pass = password.getText().toString();
                 ConfirmPass = confirmPassword.getText().toString();
@@ -107,7 +104,6 @@ public class register extends AppCompatActivity {
                 if(publicKey == null){
                     generateKeyPair();
                 }
-
 
                 if(user.equals("")) {
                     email.setError("Can't be a blank");
@@ -122,8 +118,6 @@ public class register extends AppCompatActivity {
                     password.setError("At least 8 characters long");
                 }
                 else{
-
-
                     try {
                         //Creating a Cipher object
                         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -135,31 +129,12 @@ public class register extends AppCompatActivity {
                         PublicKey pb = kf.generatePublic(spec);
                         System.out.println(pb);
 
-
-
                         byte[] decodedBytes1 = Base64.getDecoder().decode(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
                         X509EncodedKeySpec spec1 = new X509EncodedKeySpec(decodedBytes1);
                         KeyFactory kf1 = KeyFactory.getInstance("RSA");
                         PublicKey pb1 = kf.generatePublic(spec);
                         System.out.println(pb1);
 
-
-
-//                String decodedString = new String(decodedBytes);
-////                RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(decodedString, 10), new BigInteger(publicExponentStr, 10));
-//                KeyFactory factory = KeyFactory.getInstance("RSA");
-////                PublicKey pupKey = factory.generatePublic(publicSpec);
-
-
-//                cipher.init(Cipher.ENCRYPT_MODE, encodedaddedEmailf1);
-
-                        //Adding data to the cipher
-//                        byte[] input = "Welcome to Tutorialspoint".getBytes();
-//                        cipher.update(input);
-//
-//                        //encrypting the data
-//                        byte[] cipherText = cipher.doFinal();
-//                        System.out.println(new String(cipherText, "UTF8"));
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {
@@ -169,19 +144,17 @@ public class register extends AppCompatActivity {
                     }
 
                     ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(),  Base64.getEncoder().encodeToString(ChatStore.getPublicKey().getEncoded()), name.getText().toString());
-//                    ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(), Base64.getEncoder().encodeToString(publicKey.getEncoded()), name.getText().toString());
                     System.out.println("Register done");
                     System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
                     startActivity(new Intent(register.this, login.class));
 
                     Toast.makeText(register.this,"Sign Up Successful !!!", Toast.LENGTH_SHORT).show();
-
                 }
             }
-
         });
     }
 
+    //link to go to login
     private void hyperlink(){
         AlreadySignUp_hyperlink = findViewById(R.id.AlreadySignUp_hyperlink);
 

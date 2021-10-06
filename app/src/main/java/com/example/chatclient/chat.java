@@ -42,26 +42,17 @@ public class chat extends Activity {
     EditText text_send;
     ImageView ProfileImage;
     ArrayList<String> msgArr = new ArrayList<String>();
-//    private List<Observer> observers = new ArrayList<Observer>();
-
-//    FrameLayout displayChat
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-//        new Thread(ChatClient.getInstance()).start();
-
 
         Intent intent = getIntent();
         sendMsg();
         image();
         FriendName();
         System.out.println("display chat2");
-
-
-
 
         ArrayList<String> MsgArr =  ChatClient.getInstance().getChatFrndsMap().get(intent.getStringExtra("Name"));
 
@@ -82,13 +73,10 @@ public class chat extends Activity {
 
         Context currentContext = this;
 
-
-
-//        displayChat.setText(ChatClient.getInstance().);
         System.out.println("display chat1");
         displayChat.setMovementMethod(new ScrollingMovementMethod());
 
-
+        //send button - on click
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,34 +99,25 @@ public class chat extends Activity {
                 } catch (InvalidKeySpecException e) {
                     e.printStackTrace();
                 }
-//                msgArr.add(text_send.toString());
-//                ChatClient.getInstance().addMsgToQueue(text_send.getText().toString());
-//                displayChat.setText(ChatClient.getInstance().getMsgFromQueue());
-//                ChatClient.getInstance().watchMessages();
-//                displayChat.setText();
                 displayChat.setMovementMethod(new ScrollingMovementMethod());
                 System.out.println("display chat1");
 
-                //----
                 displayToMsg(text_send.getText().toString());
             }
         });
 
     }
 
+    //view sent messages
     public void displayToMsg(String msg){
         Context currentContext = this;
         runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
-
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
 
                 TextView textView1 = new TextView(currentContext);
-//                        textView1.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
-//                                AbsListView.LayoutParams.WRAP_CONTENT));
-
                 AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
                         AbsListView.LayoutParams.WRAP_CONTENT);
                 textView1.setGravity( Gravity.RIGHT);
@@ -147,7 +126,6 @@ public class chat extends Activity {
                 textView1.setBackgroundColor(0xff66ff6); // hex color 0xAARRGGBB
                 textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
                 linearLayout.addView(textView1);
-                //------
 
                 System.out.println("display chat msg to");
                 displayChat.setMovementMethod(new ScrollingMovementMethod());
@@ -169,6 +147,7 @@ public class chat extends Activity {
         });
     }
 
+    //view friend name in the top of the chat
     private  void FriendName(){
         username = findViewById(R.id.userName);
         Intent intent = getIntent();
@@ -176,9 +155,9 @@ public class chat extends Activity {
         String name = intent.getStringExtra("Name");
         String email = intent.getStringExtra("email");
         username.setText(name);
-//        ChatClient.getInstance().processMsg(name);
     }
 
+    //display messages
     public void DisplayChatMsgs(String msg){
         displayChat =  findViewById(R.id.displayChat);
 
@@ -199,7 +178,6 @@ public class chat extends Activity {
                 textView1.setBackgroundColor(0xff66ff66); // hex color 0xAARRGGBB
                 textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
                 linearLayout.addView(textView1);
-                //------
 
                 System.out.println("display chat msg");
                 displayChat.setMovementMethod(new ScrollingMovementMethod());

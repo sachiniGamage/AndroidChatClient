@@ -32,7 +32,6 @@ public class login extends AppCompatActivity {
     TextView newUser_hyperlink;
     Button signin;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,21 +48,8 @@ public class login extends AppCompatActivity {
         Password = findViewById(R.id.Password);
         signin = findViewById(R.id.signin);
 
-//        String[] arry = new String[2];
-//        arry[0] = "a";
-//        arry[1] = "b";
-
-//        try {
-//            GenPrivateKey.write(this,"sample.txt",arry);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            GenPrivateKey.read(this,"sample.txt");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         try {
+            //check public private key pairs were exists or not
             GenPrivateKey.genKeyPairIfNotExist1(this);
             System.out.println(ChatStore.getPublicKey());
         } catch (IOException e) {
@@ -83,17 +69,11 @@ public class login extends AppCompatActivity {
                 }else {
                     ChatStore.setEmail(email.getText().toString());
 
-
                     boolean isAuthenticated = ChatClient.getInstance().login(email.getText().toString(), Password.getText().toString());
                     // TODO: return string/object from login function and proceed to next view only if login is successful.
                     System.out.println("login done");
-//                    Toast.makeText(login.this,"Sign In Successful !!!", Toast.LENGTH_SHORT).show();
-
-
-
 
                     if(isAuthenticated == true){
-//                        startActivity(new Intent(login.this, chat.class).putExtra("LoginEmail", email.getText()));
                         startActivity(new Intent(login.this, friendList.class));
                     }
                     else{
@@ -106,6 +86,7 @@ public class login extends AppCompatActivity {
         });
     }
 
+    // link to go to register
     private void registerLink(){
         newUser_hyperlink = findViewById(R.id.newUser_hyperlink);
 
@@ -118,6 +99,7 @@ public class login extends AppCompatActivity {
         });
     }
 
+    // forgot password
     private void forgotPassword(){
         fgtPsw = findViewById(R.id.fgtPsw);
 
@@ -130,37 +112,21 @@ public class login extends AppCompatActivity {
                 passwordResetDialog.setMessage("Enter Your Email To Received Reset Link.");
                 passwordResetDialog.setView(resetMail);
 
-
                 passwordResetDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //extract the email and send reset link
 
                         String mail = resetMail.getText().toString();
-//                        fauth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                Toast.makeText(login.this, "Reset Link Sent To Your Email.",Toast.LENGTH_SHORT).show();
-//                            }
-//                        }).addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Toast.makeText(login.this, "Error! Reset Link Not Sent." +e.getMessage(),Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
 
-//                    }
-//                });
-                passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //close the dialog
+                        passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //close the dialog
+                            }
+                        });
+                        passwordResetDialog.create().show();
                     }
                 });
-
-                passwordResetDialog.create().show();
-            }
-        });
             }
         });
     }

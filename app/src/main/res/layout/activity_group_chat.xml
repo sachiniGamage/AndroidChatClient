@@ -52,8 +52,6 @@
                 android:clickable="true"
                 />
 
-
-
         </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_example"

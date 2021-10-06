@@ -32,7 +32,6 @@ public class friendList extends AppCompatActivity {
     protected ArrayList<String> arrayStrings = new ArrayList<String>();
     String email;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,18 +47,15 @@ public class friendList extends AppCompatActivity {
         add_btn = (ImageView)findViewById(R.id.add);
         usersList = findViewById(R.id.usersList);
 
-
         arrayStrings = ChatStore.getFriendList();
 
+        //array adapter - arrayStrings
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
         usersList = (ListView) findViewById(R.id.usersList);
         usersList.setAdapter(itemsAdapter);
 
-
-
-
-
+        //add button
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,9 +87,6 @@ public class friendList extends AppCompatActivity {
                             startActivity(new Intent(friendList.this,friendList.class));
                         }else{
                             System.out.println("frind is available in frendlist class");
-//                            arrayStrings.add(m_Text);
-//                            arrayStrings = ChatStore.getFriendList();
-
                             arrayStrings.add(name);
 //
                             ArrayAdapter<String> itemsAdapter1 =
@@ -104,24 +97,11 @@ public class friendList extends AppCompatActivity {
                             usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                  String name=  usersList.getSelectedItem().toString();
                                     String name= usersList.getItemAtPosition(position).toString();
 
                                     startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name).putExtra("email",ChatStore.getFriendEmailFromNameToMap(name)));
                                 }
                             });
-
-//                            usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                @Override
-//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                    Intent intent = new Intent(getApplicationContext(), chat.class);
-//////                                Bundle bundle = new Bundle();
-//////                                bundle.putString("email", m_Text);
-//////                                intent.putExtra("email", bundle);
-//                                    startActivity(intent);
-////                                    startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name));
-//                                }
-//                            });
                         }
                     }
                 });
@@ -139,7 +119,6 @@ public class friendList extends AppCompatActivity {
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//               String name=  usersList.getSelectedItem().toString();
                 String name= usersList.getItemAtPosition(position).toString();
 
                 startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name).putExtra("email", ChatStore.getFriendEmailFromNameToMap(name)));
@@ -147,7 +126,7 @@ public class friendList extends AppCompatActivity {
         });
     }
 
-
+    //logo - profile
     private void image(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
         grpbtn = (ImageView)findViewById(R.id.grpbtn);
@@ -158,7 +137,7 @@ public class friendList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        //go to group chats
         grpbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
