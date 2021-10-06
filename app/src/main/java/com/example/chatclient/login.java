@@ -60,8 +60,7 @@ public class login extends AppCompatActivity {
             public void onClick(View v) {
                 if(email.equals("")) {
                     email.setError("Can't be a blank");
-                }
-                else if(Password.equals("")){
+                }else if(Password.equals("")){
                     Password.setError("Can't be a blank");
                 }else {
                     ChatStore.setEmail(email.getText().toString());
@@ -70,8 +69,7 @@ public class login extends AppCompatActivity {
                     System.out.println("login done");
                     if(isAuthenticated == true){
                         startActivity(new Intent(login.this, friendList.class));
-                    }
-                    else{
+                    } else{
                         System.out.println("Login failed");
                         Toast.makeText(login.this,"Sign In Failed. Wrong Email or Password !!!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(login.this, login.class));
@@ -97,7 +95,7 @@ public class login extends AppCompatActivity {
 
     // forgot password
     private void forgotPassword(){
-        fgtPsw = findViewById(R.id.fgtPsw);
+        fgtPsw = findViewById(R.id.fgtPsw); //forget password
         fgtPsw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

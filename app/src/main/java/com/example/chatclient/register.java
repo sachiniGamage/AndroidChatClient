@@ -52,7 +52,6 @@ public class register extends AppCompatActivity {
 
     private final static String CRYPTO_METHOD = "RSA";
     private final static int CRYPTO_BITS = 2048;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,14 +105,11 @@ public class register extends AppCompatActivity {
                 }
                 else if(pass.equals("")){
                     password.setError("Can't be a blank");
-                }
-                else if(ConfirmPass.equals("")){
+                } else if(ConfirmPass.equals("")){
                     confirmPassword.setError("Can't be a blank");
-                }
-                else if(pass.length()<8){
+                } else if(pass.length()<8){
                     password.setError("At least 8 characters long");
-                }
-                else{
+                } else{
                     try {
                         //Creating a Cipher object
                         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -130,7 +126,6 @@ public class register extends AppCompatActivity {
                         KeyFactory kf1 = KeyFactory.getInstance("RSA");
                         PublicKey pb1 = kf.generatePublic(spec);
                         System.out.println(pb1);
-
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {

@@ -51,7 +51,6 @@ public class friendList extends AppCompatActivity {
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
         usersList = (ListView) findViewById(R.id.usersList);
         usersList.setAdapter(itemsAdapter);
-
         //add button
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,14 +75,12 @@ public class friendList extends AppCompatActivity {
                         } catch (NoSuchAlgorithmException e) {
                             e.printStackTrace();
                         }
-
                         if(name.equals(null)){
                             System.out.println("Friend is not available in frindlistClass");
                             startActivity(new Intent(friendList.this,friendList.class));
                         }else{
                             System.out.println("frind is available in frendlist class");
                             arrayStrings.add(name);
-//
                             ArrayAdapter<String> itemsAdapter1 = new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
                             usersList = (ListView) findViewById(R.id.usersList);
                             usersList.setAdapter(itemsAdapter1);

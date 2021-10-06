@@ -26,7 +26,7 @@ public class groups extends AppCompatActivity {
 
     ImageView addFriends;
     ImageView ProfileImage,btnAdd;
-    private String m_Text ;
+    private String m_Text ; //message
     private ListView usersList;
     protected ArrayList<String> arrayStrings = new ArrayList<String>();
     protected ArrayList<GroupIDObject> grpArrayStrings = new ArrayList<GroupIDObject>();
@@ -109,6 +109,7 @@ public class groups extends AppCompatActivity {
             }
         });
     }
+
 
     //app logo - go to friend list
     private void image(){

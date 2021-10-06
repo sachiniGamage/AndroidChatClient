@@ -91,6 +91,7 @@ public class groupChat extends AppCompatActivity {
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //message
                         m_Text = input.getText().toString();
                         System.out.println(m_Text);
                         String groupName = ChatClient.getInstance().createGroup(grpID,name,email,m_Text);
