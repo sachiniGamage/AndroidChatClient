@@ -64,7 +64,6 @@ public class ChatStore {
     }
 
     public static String getFriendEmailFromNameToMap(String name){
-
         return emailFriendNameMap.get(name);
     }
 
@@ -81,7 +80,6 @@ public class ChatStore {
     }
 
     public static String getFriendEmailToNameToMap(String name){
-
         return emailFriendNameMap.get(name);
     }
 

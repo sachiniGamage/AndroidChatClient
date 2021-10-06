@@ -46,12 +46,9 @@ public class friendList extends AppCompatActivity {
     private void AddNewFriend(){
         add_btn = (ImageView)findViewById(R.id.add);
         usersList = findViewById(R.id.usersList);
-
         arrayStrings = ChatStore.getFriendList();
-
         //array adapter - arrayStrings
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
         usersList = (ListView) findViewById(R.id.usersList);
         usersList.setAdapter(itemsAdapter);
 
@@ -61,13 +58,11 @@ public class friendList extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(friendList.this);
                 builder.setTitle("Friend's Email Address");
-
                 // Set up the input
                 EditText input = new EditText(friendList.this);
                 // type of input
                 input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 builder.setView(input);
-
                 // Set up the buttons
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
@@ -89,16 +84,13 @@ public class friendList extends AppCompatActivity {
                             System.out.println("frind is available in frendlist class");
                             arrayStrings.add(name);
 //
-                            ArrayAdapter<String> itemsAdapter1 =
-                                    new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
+                            ArrayAdapter<String> itemsAdapter1 = new ArrayAdapter<String>(friendList.this, android.R.layout.simple_list_item_1,arrayStrings);
                             usersList = (ListView) findViewById(R.id.usersList);
                             usersList.setAdapter(itemsAdapter1);
-
                             usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     String name= usersList.getItemAtPosition(position).toString();
-
                                     startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name).putExtra("email",ChatStore.getFriendEmailFromNameToMap(name)));
                                 }
                             });
@@ -112,7 +104,6 @@ public class friendList extends AppCompatActivity {
                     }
                 });
                 builder.show();
-
             }
         });
 
@@ -120,11 +111,11 @@ public class friendList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name= usersList.getItemAtPosition(position).toString();
-
                 startActivity(new Intent(friendList.this,chat.class).putExtra("Name",name).putExtra("email", ChatStore.getFriendEmailFromNameToMap(name)));
             }
         });
     }
+
 
     //logo - profile
     private void image(){
@@ -137,6 +128,7 @@ public class friendList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         //go to group chats
         grpbtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -40,14 +40,12 @@ public class login extends AppCompatActivity {
         signin();
         registerLink();
         forgotPassword();
-
     }
 
     private void signin(){
         email = findViewById(R.id.email);
         Password = findViewById(R.id.Password);
         signin = findViewById(R.id.signin);
-
         try {
             //check public private key pairs were exists or not
             GenPrivateKey.genKeyPairIfNotExist1(this);
@@ -57,7 +55,6 @@ public class login extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,11 +65,9 @@ public class login extends AppCompatActivity {
                     Password.setError("Can't be a blank");
                 }else {
                     ChatStore.setEmail(email.getText().toString());
-
                     boolean isAuthenticated = ChatClient.getInstance().login(email.getText().toString(), Password.getText().toString());
                     // TODO: return string/object from login function and proceed to next view only if login is successful.
                     System.out.println("login done");
-
                     if(isAuthenticated == true){
                         startActivity(new Intent(login.this, friendList.class));
                     }
@@ -86,10 +81,10 @@ public class login extends AppCompatActivity {
         });
     }
 
+
     // link to go to register
     private void registerLink(){
         newUser_hyperlink = findViewById(R.id.newUser_hyperlink);
-
         newUser_hyperlink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,10 +94,10 @@ public class login extends AppCompatActivity {
         });
     }
 
+
     // forgot password
     private void forgotPassword(){
         fgtPsw = findViewById(R.id.fgtPsw);
-
         fgtPsw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,13 +106,10 @@ public class login extends AppCompatActivity {
                 passwordResetDialog.setTitle("Reset Password?");
                 passwordResetDialog.setMessage("Enter Your Email To Received Reset Link.");
                 passwordResetDialog.setView(resetMail);
-
                 passwordResetDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         String mail = resetMail.getText().toString();
-
                         passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -130,5 +122,4 @@ public class login extends AppCompatActivity {
             }
         });
     }
-
 }

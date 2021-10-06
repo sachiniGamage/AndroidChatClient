@@ -21,13 +21,12 @@ public class MainActivity extends AppCompatActivity {
 
         signin();
         signup();
-
     }
+
 
     //login
     private void signin(){
         btn_signin = findViewById(R.id.btn_signIn);
-
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     //register
     private void signup(){
         btn_signup = findViewById(R.id.btn_signup);
-
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,5 +46,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

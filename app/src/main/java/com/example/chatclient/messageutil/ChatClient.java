@@ -88,12 +88,14 @@ public class ChatClient implements Runnable {
         return chatClient;
     }
 
+
     //add messages to queue
     public void addMsgToQueue(String message) {
         System.out.println("Message Added to the queue" + message);
         msgQueue.add(message);
         msgArr.add(message);
     }
+
 
     public void initConn(){
         String target = "35.244.15.151:50052";
@@ -105,6 +107,7 @@ public class ChatClient implements Runnable {
             }
         }
     }
+
 
     //channel
     public void initConnection() {
@@ -124,6 +127,7 @@ public class ChatClient implements Runnable {
         System.out.println("Connection established.");
     }
 
+
     //view group messages
     public void watchGrpMsg() {
         reqObserverGrp = chatStub.groupChat(new StreamObserver<GroupMessageFromServer>() {
@@ -135,26 +139,25 @@ public class ChatClient implements Runnable {
                 String id = value.getGroupList().getGroupDetails().getGroupId();
                 String friend = value.getGroupList().getGroupDetails().getFriendEmail();
 
-                    if (GrpIdMsgsMap.get(id)== null) {
-                        GrpIdMsgsMap.put(id, new ArrayList<GroupMsgObj>());
-                    }
-
-                    try {
-                        System.out.println("display chat3");
-                        GroupMsgObj obj = new GroupMsgObj(msg,friend);
-                        GrpIdMsgsMap.get(id).add(obj);
-                        if (grpChatUI != null) {
-                            if (friend.equals(ChatStore.getEmail())) {
-                                grpChatUI.displayToMsg(msg);
-                                System.out.println("displayToMsg");
-                            } else {
-                                System.out.println("displayGrpMsg");
-                                grpChatUI.displayGrpMsg(msg);
-                            }
+                if (GrpIdMsgsMap.get(id)== null) {
+                    GrpIdMsgsMap.put(id, new ArrayList<GroupMsgObj>());
+                }
+                try {
+                    System.out.println("display chat3");
+                    GroupMsgObj obj = new GroupMsgObj(msg,friend);
+                    GrpIdMsgsMap.get(id).add(obj);
+                    if (grpChatUI != null) {
+                        if (friend.equals(ChatStore.getEmail())) {
+                            grpChatUI.displayToMsg(msg);
+                            System.out.println("displayToMsg");
+                        } else {
+                            System.out.println("displayGrpMsg");
+                            grpChatUI.displayGrpMsg(msg);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onError(Throwable t) {
@@ -165,16 +168,15 @@ public class ChatClient implements Runnable {
             public void onCompleted() {
                 System.out.println("completed");
             }
-
         });
     }
+
 
     //check whether the messages are received to the server side
     public void watchMessages() {
         reqObserver = chatStub.chat(new StreamObserver<ChatMessageFromServer>() {
             @Override
             public void onNext(ChatMessageFromServer value) {
-
                 System.out.println("recieved message " + value.getMessage().getMessage() );
                 getMsgList().add(value.getMessage().getMessage());
                 String msgs = value.getMessage().getMessage();
@@ -184,13 +186,11 @@ public class ChatClient implements Runnable {
                 if (chatFrndsMap.get(from)== null) {
                     chatFrndsMap.put(from, new ArrayList<String>());
                 }
-
                 try {
                     //decrypt message
                     String msg = givenPassword_whenDecrpt_thenSuccess(msgs, "baeldung", "12345678");
                     System.out.println("display chat3");
                     chatFrndsMap.get(from).add(msg);
-
                     String currentFriendEmail = ChatStore.getFriendEmailFromNameToMap(currentChatFriendName);
 
                     if(from.equals(currentFriendEmail) ) {
@@ -226,13 +226,14 @@ public class ChatClient implements Runnable {
                 System.out.println("completed");
             }
         });
-
     }
+
 
     public void addChat(String user, chat observer){
         this.chatUI = observer;
         this.currentChatFriendName = user;
     }
+
 
     public void addGrpChat(String grpid, groupChat observer){
         this.grpChatUI = observer;
@@ -243,9 +244,11 @@ public class ChatClient implements Runnable {
     public void getCurrentUser(String user){
     }
 
+
     public String getMsgFromQueue(){
         return msgQueue.peek();
     }
+
 
     //pass message and email to server
     public void processMessageQueue() throws InterruptedException {
@@ -253,11 +256,12 @@ public class ChatClient implements Runnable {
                 Thread.sleep(1000);
         }
         String msg = msgQueue.poll();
-            String email = "abc@gmail.com";
-            ChatMessage message = ChatMessage.newBuilder().setMessage(msg).setFrom(email).build();
-            reqObserver.onNext(message);
-            Thread.sleep(5000);
+        String email = "abc@gmail.com";
+        ChatMessage message = ChatMessage.newBuilder().setMessage(msg).setFrom(email).build();
+        reqObserver.onNext(message);
+        Thread.sleep(5000);
     }
+
 
 //add a group message
     public void processGroupMsg(String friendemail, String groupId,String message){
@@ -271,6 +275,7 @@ public class ChatClient implements Runnable {
         System.out.println(grpmsgArr.add(groupMessage.toString()));
     }
 
+
     //add a message - private chat
     public void processMsg(String touser,String msg) throws BadPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException {
         initConnection();
@@ -280,7 +285,6 @@ public class ChatClient implements Runnable {
         }
         String fromuser = ChatStore.getEmail();
         String messages = msg;
-
         //encrypt the message
         String msgs = givenPassword_whenEncrypt_thenSuccess(msg,"baeldung","12345678");
         System.out.println("msg encrpt");
@@ -289,16 +293,21 @@ public class ChatClient implements Runnable {
         System.out.println(msgArr.add(message.toString()));
     }
 
+
     public List<String> getMsgList() {
         return msgList;
     }
+
+
     public List<String> getGrpMsgList(){
         return grpMsgList;
     }
 
+
     public void setMsgList(List<String> msgList) {
         this.msgList = msgList;
     }
+
 
     //pass register details to server
     public  void register(String email,String password,String pblcKey,String username){
@@ -314,12 +323,12 @@ public class ChatClient implements Runnable {
         System.out.println("inside register");
     }
 
+
     //login
     public boolean login(String email, String password){
         initConnection();
-            this.authStub = AuthenticateUserGrpc.newBlockingStub(channel);
+        this.authStub = AuthenticateUserGrpc.newBlockingStub(channel);
         System.out.println("login");
-
         LoginUser user = LoginUser.newBuilder().setEmail(email).setPassword(password).build();
         System.out.println("login1");
         Token token = authStub.login(user);
@@ -350,10 +359,10 @@ public class ChatClient implements Runnable {
             //mage email address ekata adaala friendsla
             getFriendlist(email);
             getGroupList(email);
-
             return true;
         }
     }
+
 
     //get groups
     public void getGroupList(String myEmail){
@@ -374,6 +383,7 @@ public class ChatClient implements Runnable {
         ChatStore.setGroupList(arrayList);
     }
 
+
     // mage email address ekata adaala friendsla
     private void getFriendlist(String email){
         initConnection();
@@ -390,20 +400,15 @@ public class ChatClient implements Runnable {
         for (RegisterUser registerUser : response.getFriendsInListList()) {
             System.out.println("*************************GetFriendlist************************");
             System.out.println("***************************************************************");
-
             arrayList.add(registerUser.getUsername());
             System.out.println("Encrypted key " + registerUser.getEncryptedKey());
-
             ChatStore.addFriendNameEmailToMap(registerUser.getUsername(),registerUser.getEmail());
             ChatStore.addEmailSymmetricKeyToMap(registerUser.getEmail(),registerUser.getEncryptedKey());
-
             try {
                 //decrypt
                 String myDecrypt = decryption(registerUser.getEncryptedKey(),ChatStore.getPrivateKey());
                 System.out.println("myDecrypt"+myDecrypt);
-
                 ChatStore.addFriendEmailDecryptedKeyMap(registerUser.getEmail(),myDecrypt);
-
             } catch (NoSuchPaddingException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -418,9 +423,7 @@ public class ChatClient implements Runnable {
             System.out.println(arrayList);
         }
         ChatStore.setFriendList(arrayList);
-
     }
-    
 
 
     // profile name
@@ -430,17 +433,15 @@ public class ChatClient implements Runnable {
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
         }
         System.out.println("UpdateStub");
-
         Edit edit1 = Edit.newBuilder().setUsername(name).build();
         RegisterUser username = updateStub.updateName(edit1);
-
         System.out.println("update name");
     }
+
 
     //Create a group
     public String createGroup(String groupId, String groupName, String adminEmail,String friendEmail){
         initConnection();
-
         if(updateStub == null){
             this.updateStub = UpdateUserGrpc.newBlockingStub(channel);
             System.out.println("createGroup - chatstub - null");
@@ -458,6 +459,7 @@ public class ChatClient implements Runnable {
         return grpname;
     }
 
+
     //add new friend
     public String updateFriendList(String emailf) throws NoSuchAlgorithmException {
         initConnection();
@@ -467,7 +469,6 @@ public class ChatClient implements Runnable {
         }
         kpg = KeyPairGenerator.getInstance(CRYPTO_METHOD);
         kpg.initialize(CRYPTO_BITS);
-
         //symmetric key
         String randomString = "xyz";
 
@@ -475,56 +476,55 @@ public class ChatClient implements Runnable {
         AddFriendReq friendrequest = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).build();
         AddFriendReq response = updateStub.addFriend(friendrequest);
         System.out.println("public key" + response.getDetail().getPublicKey());
-            System.out.println("Friend is available - chatClient");
-            System.out.println(response.getDetail().getUsername().getUsername());
-            String frndName  = response.getDetail().getUsername().getUsername().toString();
-            String publicKey = response.getDetail().getPublicKey();
-            System.out.println("get public key");
-            System.out.println(publicKey);
+        System.out.println("Friend is available - chatClient");
+        System.out.println(response.getDetail().getUsername().getUsername());
+        String frndName  = response.getDetail().getUsername().getUsername().toString();
+        String publicKey = response.getDetail().getPublicKey();
+        System.out.println("get public key");
+        System.out.println(publicKey);
 
-            try {
-                //Creating a Cipher object
-                Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        try {
+            //Creating a Cipher object
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 
-                //Initializing a Cipher object
-                byte[] decodedBytes = Base64.getDecoder().decode(publicKey);
-                X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedBytes);
-                KeyFactory kf = KeyFactory.getInstance("RSA");
-                PublicKey pb = kf.generatePublic(spec);
-                System.out.println(pb);
+            //Initializing a Cipher object
+            byte[] decodedBytes = Base64.getDecoder().decode(publicKey);
+            X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedBytes);
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            PublicKey pb = kf.generatePublic(spec);
+            System.out.println(pb);
 
-                //encryption
-                String friendEncrypt= encrypt(randomString,pb);
-                System.out.println("friendEncrypt "+ friendEncrypt);
-                String myEncrypt = encrypt(randomString,ChatStore.getPublicKey());
-                System.out.println("myEncrypt"+myEncrypt);
+            //encryption
+            String friendEncrypt= encrypt(randomString,pb);
+            System.out.println("friendEncrypt "+ friendEncrypt);
+            String myEncrypt = encrypt(randomString,ChatStore.getPublicKey());
+            System.out.println("myEncrypt"+myEncrypt);
 
-                AddFriendReq friendrequest1 = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).setAddedEmailf1(friendEncrypt).setAddbymyemail(myEncrypt).build();
-                AddFriendReq response1 = updateStub.addFriend(friendrequest1);
-                System.out.println("get response from friendrequest");
-                System.out.println(response1.getDetail().getPublicKey());
-                String myDecrypt = decryption(response1.getAddbymyemail(),ChatStore.getPrivateKey());
-                System.out.println("getAddbymyemail() "+response1.getAddbymyemail());
-                System.out.println("myDecrypt"+myDecrypt);
+            AddFriendReq friendrequest1 = AddFriendReq.newBuilder().setDetail(FriendList.newBuilder().setFriendsEmail(emailf).build()).setMyemail(myemail).setAddedEmailf1(friendEncrypt).setAddbymyemail(myEncrypt).build();
+            AddFriendReq response1 = updateStub.addFriend(friendrequest1);
+            System.out.println("get response from friendrequest");
+            System.out.println(response1.getDetail().getPublicKey());
+            String myDecrypt = decryption(response1.getAddbymyemail(),ChatStore.getPrivateKey());
+            System.out.println("getAddbymyemail() "+response1.getAddbymyemail());
+            System.out.println("myDecrypt"+myDecrypt);
 
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                System.out.println("invalid key exception when decrypt");
-                e.printStackTrace();
-            }
-
-            return frndName;
-
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            System.out.println("invalid key exception when decrypt");
+            e.printStackTrace();
+        }
+        return frndName;
     }
+
 
     //message decrypt
     String givenPassword_whenDecrpt_thenSuccess(String msg, String password, String salt)
@@ -535,11 +535,10 @@ public class ChatClient implements Runnable {
         String cipherText = msg;
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
         SecretKey key = AESUtil.getKeyFromPassword(password,salt);
-        String decryptedCipherText = AESUtil.decryptPasswordBased(
-                cipherText, key, ivParameterSpec);
-
+        String decryptedCipherText = AESUtil.decryptPasswordBased(cipherText, key, ivParameterSpec);
         return decryptedCipherText;
     }
+
 
     //message encrypt
     String givenPassword_whenEncrypt_thenSuccess(String msg, String password, String salt)
@@ -551,11 +550,11 @@ public class ChatClient implements Runnable {
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
         SecretKey key = AESUtil.getKeyFromPassword(password,salt);
         String cipherText = AESUtil.encryptPasswordBased(plainText, key, ivParameterSpec);
-
         return cipherText;
     }
 
     private static final String ALGORITHM = "AES";
+
 
     public String encrypt(String msg, String symkey) {
         String encryptedVal = null;
@@ -572,9 +571,11 @@ public class ChatClient implements Runnable {
         return encryptedVal;
     }
 
+
     //encrypt
     public static String encrypt(String plainText, PublicKey publicKey)  {
         Cipher encryptCipher = null;
+
         try {
             encryptCipher = Cipher.getInstance("RSA");
         } catch (NoSuchAlgorithmException e) {
@@ -582,6 +583,7 @@ public class ChatClient implements Runnable {
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         }
+
         try {
             encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
         } catch (InvalidKeyException e) {
@@ -589,6 +591,7 @@ public class ChatClient implements Runnable {
         }
 
         byte[] cipherText = new byte[0];
+
         try {
             cipherText = encryptCipher.doFinal(plainText.getBytes(UTF_8));
         } catch (BadPaddingException e) {
@@ -599,13 +602,12 @@ public class ChatClient implements Runnable {
         return Base64.getEncoder().encodeToString(cipherText);
     }
 
+
     //decrypt
     public static String decryption(String cipherText, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         byte[] bytes = Base64.getDecoder().decode(cipherText);
-
         Cipher decriptCipher = Cipher.getInstance("RSA");
         decriptCipher.init(Cipher.DECRYPT_MODE, privateKey);
-
         return new String(decriptCipher.doFinal(bytes));
 
     }

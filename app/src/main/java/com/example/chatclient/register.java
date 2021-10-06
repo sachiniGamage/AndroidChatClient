@@ -50,7 +50,6 @@ public class register extends AppCompatActivity {
     KeyPairGenerator kpg;
     KeyPair kp;
 
-
     private final static String CRYPTO_METHOD = "RSA";
     private final static int CRYPTO_BITS = 2048;
 
@@ -61,8 +60,8 @@ public class register extends AppCompatActivity {
 
         signup();
         hyperlink();
-
     }
+
 
     public void generateKeyPair() {
         try{
@@ -76,13 +75,13 @@ public class register extends AppCompatActivity {
         }
     }
 
+
     private void signup() {
         email = (TextInputEditText) findViewById(R.id.email);
         password = findViewById(R.id.Password);
         confirmPassword = findViewById(R.id.ConfirmPassword);
         signup = findViewById(R.id.signup);
         name = findViewById(R.id.name);
-
         try {
             //check public private keys generated or not
             GenPrivateKey.genKeyPairIfNotExist1(this);
@@ -92,19 +91,16 @@ public class register extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 user = email.getText().toString();
                 pass = password.getText().toString();
                 ConfirmPass = confirmPassword.getText().toString();
-
                 //generate key pair
                 if(publicKey == null){
                     generateKeyPair();
                 }
-
                 if(user.equals("")) {
                     email.setError("Can't be a blank");
                 }
@@ -142,7 +138,6 @@ public class register extends AppCompatActivity {
                     } catch (InvalidKeySpecException e) {
                         e.printStackTrace();
                     }
-
                     ChatClient.getInstance().register(email.getText().toString(), password.getText().toString(),  Base64.getEncoder().encodeToString(ChatStore.getPublicKey().getEncoded()), name.getText().toString());
                     System.out.println("Register done");
                     System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
@@ -154,10 +149,10 @@ public class register extends AppCompatActivity {
         });
     }
 
+
     //link to go to login
     private void hyperlink(){
         AlreadySignUp_hyperlink = findViewById(R.id.AlreadySignUp_hyperlink);
-
         AlreadySignUp_hyperlink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

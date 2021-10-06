@@ -47,23 +47,18 @@ public class groups extends AppCompatActivity {
         usersList = findViewById(R.id.usersList);
         ChatStore.getGrpIDAndGroupNameMap();
         ChatStore.getGroupList();
-
         for(Map.Entry<String, String> entry : ChatStore.getGrpIDAndGroupNameMap().entrySet()){
             GroupIDObject grpID = new GroupIDObject(entry.getKey(),entry.getValue());
             grpArrayStrings.add(grpID);
         }
-
-        ArrayAdapter<GroupIDObject> itemsAdapter =
-                    new ArrayAdapter<GroupIDObject>(groups.this, android.R.layout.simple_list_item_1, grpArrayStrings);
-            usersList = (ListView) findViewById(R.id.usersList);
-            usersList.setAdapter(itemsAdapter);
-
+        ArrayAdapter<GroupIDObject> itemsAdapter = new ArrayAdapter<GroupIDObject>(groups.this, android.R.layout.simple_list_item_1, grpArrayStrings);
+        usersList = (ListView) findViewById(R.id.usersList);
+        usersList.setAdapter(itemsAdapter);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(groups.this);
                 builder.setTitle("Group Name");
-
                 // Set up the input
                 EditText input = new EditText(groups.this);
                 // type of input
@@ -73,25 +68,20 @@ public class groups extends AppCompatActivity {
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         String randomString = UUID.randomUUID().toString();
                         m_Text = input.getText().toString();
                         System.out.println(m_Text);
                         String groupName = m_Text;
                         System.out.println("groupName: " + groupName);
-
                         ChatStore.addGrpIdGrpNameToMap(randomString,groupName);
                         arrayStrings.add(groupName);
                         grpArrayStrings.add(new GroupIDObject(randomString,groupName));
-
                         if(groupName.equals("")){
                             startActivity(new Intent(groups.this,groups.class));
                         }else{
-                            ArrayAdapter<GroupIDObject> itemsAdapter1 =
-                                    new ArrayAdapter<GroupIDObject>(groups.this, android.R.layout.simple_list_item_1,grpArrayStrings);
+                            ArrayAdapter<GroupIDObject> itemsAdapter1 = new ArrayAdapter<GroupIDObject>(groups.this, android.R.layout.simple_list_item_1,grpArrayStrings);
                             usersList = (ListView) findViewById(R.id.usersList);
                             usersList.setAdapter(itemsAdapter1);
-
                             usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -109,22 +99,20 @@ public class groups extends AppCompatActivity {
                     }
                 });
                 builder.show();
-                }
+            }
         });
-
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name= usersList.getItemAtPosition(position).toString();
-
                 startActivity(new Intent(groups.this,groupChat.class).putExtra("Name",name).putExtra("email", ChatStore.getEmail()).putExtra("uuid", ((GroupIDObject)parent.getItemAtPosition(position)).getGrpID()));
             }
         });
     }
+
     //app logo - go to friend list
     private void image(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
-
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

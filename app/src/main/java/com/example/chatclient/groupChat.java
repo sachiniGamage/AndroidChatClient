@@ -45,6 +45,7 @@ public class groupChat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
+
         Intent intent = getIntent();
         addFriendsToGroup();
         image();
@@ -64,9 +65,9 @@ public class groupChat extends AppCompatActivity {
                 }
             }
         }
-
         ChatClient.getInstance().addGrpChat(intent.getStringExtra("uuid"),this);
     }
+
 
     //button for add friends
     public void addFriendsToGroup(){
@@ -92,9 +93,7 @@ public class groupChat extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text = input.getText().toString();
                         System.out.println(m_Text);
-
                         String groupName = ChatClient.getInstance().createGroup(grpID,name,email,m_Text);
-
                         if(name.equals(null)){
                             System.out.println("Friend is not available in frindlistClass");
                             startActivity(new Intent(groupChat.this,groupChat.class));
@@ -114,10 +113,10 @@ public class groupChat extends AppCompatActivity {
         });
     }
 
+
     //app logo - go to groups
     private void image(){
         ProfileImage =(ImageView)findViewById(R.id.ProfileImage);
-
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,21 +126,21 @@ public class groupChat extends AppCompatActivity {
         });
     }
 
+
     private  void FriendName(){
         username = findViewById(R.id.userName);
         Intent intent = getIntent();
-
         String name = intent.getStringExtra("Name");
         String email = intent.getStringExtra("email");
         username.setText(name);
     }
+
 
     //send messages - group chat
     public void grpSendMessage(){
         textSend = findViewById(R.id.textSend);
         sendComment = findViewById(R.id.sendComment);
         Intent intent = getIntent();
-
         String name = intent.getStringExtra("Name");
         String email = intent.getStringExtra("email");
         String uuid = intent.getStringExtra("uuid");
@@ -159,24 +158,21 @@ public class groupChat extends AppCompatActivity {
     public void displayToMsg(String msg){
         Context currentContext = this;
         runOnUiThread(new Runnable() {
-
             @Override
             public void run() {
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
                 TextView textView1 = new TextView(currentContext);
-                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
-                        AbsListView.LayoutParams.WRAP_CONTENT);
+                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
                 textView1.setGravity( Gravity.RIGHT);
-
                 textView1.setText(msg);
                 textView1.setBackgroundColor(0xff66ff6); // hex color 0xAARRGGBB
                 textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
                 linearLayout.addView(textView1);
-
                 System.out.println("display chat msg to");
             }
         });
     }
+
 
     public void displayGrpMsg(String msg){
         displayChat = findViewById(R.id.displayChat);
@@ -186,8 +182,7 @@ public class groupChat extends AppCompatActivity {
             public void run() {
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_example);
                 TextView textView1 = new TextView(currentContext);
-                textView1.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT,
-                        AbsListView.LayoutParams.WRAP_CONTENT));
+                textView1.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT));
                 textView1.setText(msg);
                 textView1.setBackgroundColor(0xff66ff66); // hex color 0xAARRGGBB
                 textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)

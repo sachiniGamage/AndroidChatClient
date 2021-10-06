@@ -47,53 +47,44 @@ public class GenPrivateKey {
 
 // read files
     public static String read(Context context,String filename) throws IOException {
-
         File fileEvents = new File(context.getFilesDir(), filename);
         StringBuilder text = new StringBuilder();
         BufferedReader br = new BufferedReader(new FileReader(fileEvents));
-
         String line;
-            while ((line = br.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
-            }
-
-            br.close();
-
+        while ((line = br.readLine()) != null) {
+            text.append(line);
+            text.append('\n');
+        }
+        br.close();
         String result = text.toString();
         return result;
     }
+
 
     //check private public keys exists or not
     public static void genKeyPairIfNotExist1(Context context) throws IOException, NoSuchAlgorithmException {
         String prvtkeyFile = "prvtKey1.txt";
         String pbKeyFile = "pbKey1.txt";
-
         String[] pvtPbKey = new String[2];
-
         try {
             String privateKey = read(context,prvtkeyFile);
             String publicKey = read(context, pbKeyFile);
 
             ChatStore.setPublicKey(genPbkey(removeSuffix(publicKey,"\n")));
             ChatStore.setPrivateKey(genPvtkey(removeSuffix(privateKey,"\n")));
-                    System.out.println("genPvtkey(privateKey)"+genPvtkey(privateKey));
-                    pvtPbKey[0] = privateKey;
-                    pvtPbKey[1] = publicKey;
-
-
+            System.out.println("genPvtkey(privateKey)"+genPvtkey(privateKey));
+            pvtPbKey[0] = privateKey;
+            pvtPbKey[1] = publicKey;
         }catch (FileNotFoundException e){
             String[] privatePublicKeyStrings = generateKeyPair();
             write(context, prvtkeyFile, privatePublicKeyStrings[0]);
             write(context, pbKeyFile, privatePublicKeyStrings[1]);
-
         }
-
     }
 
+
     // remove suffix
-    public static String removeSuffix(final String s, final String suffix)
-    {
+    public static String removeSuffix(final String s, final String suffix){
         if (s != null && suffix != null && s.endsWith(suffix)) {
             return s.substring(0, s.length() - suffix.length());
         }
@@ -101,7 +92,6 @@ public class GenPrivateKey {
     }
 
     public static void genKeyPairIfNotExist(Context context) throws IOException {
-
        String prvtkeyFile = "prvtKey.txt";
        String pbKeyFile = "pbKey.txt";
        String prvtKeyString = "";
@@ -120,15 +110,11 @@ public class GenPrivateKey {
     }
 
 
-
     //create new file
     public static void write( Context context,String filename,String content) throws IOException {
-
         File file = new File(context.getFilesDir(), filename);
-
         try {
             FileWriter writer = new FileWriter(file);
-
             writer.append(content);
             writer.flush();
             writer.close();
@@ -149,15 +135,11 @@ public class GenPrivateKey {
             ChatStore.setPrivateKey(privateKey);
             arr[0] = Base64.getEncoder().encodeToString(privateKey.getEncoded());
             arr[1] = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return arr;
-
     }
-
 
 
     public static PublicKey genPbkey() {
@@ -177,6 +159,7 @@ public class GenPrivateKey {
         }
         return pb1;
     }
+
 
     //generate public key
     public static PublicKey genPbkey(String publicKeyBase64Encoded) {
@@ -198,7 +181,6 @@ public class GenPrivateKey {
     }
 
 
-
     public static PrivateKey genPvtkey() {
         byte[] decodedBytes1 = Base64.getDecoder().decode(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
         X509EncodedKeySpec spec1 = new X509EncodedKeySpec(decodedBytes1);
@@ -212,7 +194,7 @@ public class GenPrivateKey {
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         }
-return pb1;
+        return pb1;
     }
 
 
@@ -232,6 +214,4 @@ return pb1;
         }
         return pb1;
     }
-
-
 }
